@@ -1,0 +1,2291 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFA STORE | أفضل متجر تيشرتات في مصر</title>
+    <meta name="description" content="FIFA STORE - أكبر تشكيلة من تيشرتات وقمصان الأندية العالمية والمنتخبات والكلاسيكيات (Retro) في مصر، بأسعار موحدة من 300 إلى 320 جنيه، مع توصيل لكل المحافظات وطلب سريع عبر الواتساب.">
+    <!-- Favicon (inline SVG jersey icon - no external file needed) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%230d0d0d'/%3E%3Cpath d='M8 2 4 6l2 3v11h12V9l2-3-4-4-4 3-4-3Z' fill='%23ffffff'/%3E%3C/svg%3E">
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================
+           1. CSS VARIABLES & BASE STYLES
+           ========================================== */
+        :root {
+            --bg-color: #0d0d0d;
+            --surface-color: #181818;
+            --surface-light: #262626;
+            --text-color: #ffffff;
+            --text-muted: #a3a3a3;
+            --border-color: #333333;
+            --transition: all 0.3s ease;
+            --font-main: 'Cairo', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-main);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        ul { list-style: none; }
+
+        button {
+            cursor: pointer;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        input, select, textarea {
+            font-family: inherit;
+            outline: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 4px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .btn-primary:hover {
+            background-color: #d4d4d4;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+        }
+
+        .btn-outline:hover {
+            background-color: #ffffff;
+            color: #000000;
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #ffffff;
+        }
+
+        /* ==========================================
+           2. HEADER & NAVIGATION
+           ========================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+        }
+
+        .logo span {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ffffff;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            background: none;
+            color: #ffffff;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            background-color: #ffffff;
+            color: #000000;
+            font-size: 0.75rem;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+        }
+
+        /* ==========================================
+           3. HERO SECTION
+           ========================================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 80px;
+            background: linear-gradient(rgba(13, 13, 13, 0.85), rgba(13, 13, 13, 0.95)), 
+                        url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background-color: var(--surface-light);
+            border: 1px solid var(--border-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            max-width: 650px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 30px;
+        }
+
+        .stat-item h3 {
+            font-size: 1.8rem;
+            font-weight: 900;
+        }
+
+        .stat-item p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ==========================================
+           4. FEATURES SECTION
+           ========================================== */
+        .features {
+            padding: 80px 0;
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            border-color: #ffffff;
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ==========================================
+           5. PRODUCTS CATALOG & FILTER
+           ========================================== */
+        .products-section {
+            padding: 100px 0;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 22px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--text-muted);
+            padding: 60px 20px;
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+        }
+
+        .product-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            border-color: #ffffff;
+            transform: translateY(-5px);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #ffffff;
+            color: #000000;
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            z-index: 10;
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background-color: #121212;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-actions {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-actions {
+            bottom: 0;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .action-btn:hover {
+            background-color: #cccccc;
+        }
+
+        .product-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-category {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #ffffff;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .product-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        /* ==========================================
+           6. PROMOTIONAL BANNER
+           ========================================== */
+        .promo-banner {
+            padding: 80px 0;
+            background: linear-gradient(90deg, #000000 0%, #1a1a1a 100%);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .banner-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            padding: 50px;
+            border-radius: 12px;
+        }
+
+        .banner-text h3 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .banner-text p {
+            color: var(--text-muted);
+        }
+
+        /* ==========================================
+           7. MODALS & SIDEBARS
+           ========================================== */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1050;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 100%;
+            max-width: 400px;
+            height: 100%;
+            background-color: var(--surface-color);
+            z-index: 1100;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .cart-sidebar.active {
+            left: 0;
+        }
+
+        .cart-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            color: var(--text-muted);
+            font-size: 1.3rem;
+        }
+
+        .close-btn:hover {
+            color: #ffffff;
+        }
+
+        .cart-body {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cart-item-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 4px;
+            object-fit: cover;
+            background-color: #121212;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .cart-item-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .qty-btn {
+            background: none;
+            color: #ffffff;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-value {
+            padding: 0 8px;
+            font-size: 0.85rem;
+        }
+
+        .remove-item {
+            color: #888;
+            font-size: 0.85rem;
+            background: none;
+        }
+
+        .remove-item:hover {
+            color: #ff4d4d;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            z-index: 1200;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .quick-view-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .qv-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
+            background-color: #121212;
+        }
+
+        .qv-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .qv-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .qv-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .qv-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .size-selector {
+            margin-bottom: 20px;
+        }
+
+        .size-selector label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .size-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border-color);
+            background: none;
+            color: #ffffff;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .size-btn:hover,
+        .size-btn.active {
+            border-color: #ffffff;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        /* Admin Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: #ffffff;
+        }
+
+        .form-control:focus {
+            border-color: #ffffff;
+        }
+
+        /* ==========================================
+           8. FOOTER
+           ========================================== */
+        footer {
+            background-color: #000000;
+            border-top: 1px solid var(--border-color);
+            padding: 70px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-col h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-col ul li a:hover {
+            color: #ffffff;
+            padding-right: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-link {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+        }
+
+        .social-link:hover {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            z-index: 900;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* ==========================================
+           9. RESPONSIVE DESIGN
+           ========================================== */
+        @media (max-width: 992px) {
+            .hero-title { font-size: 2.5rem; }
+            .banner-box { flex-direction: column; text-align: center; }
+            .quick-view-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                right: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: var(--bg-color);
+                flex-direction: column;
+                align-items: center;
+                padding-top: 50px;
+                transition: var(--transition);
+            }
+            .nav-links.active { right: 0; }
+            .hero-title { font-size: 2rem; }
+            .hero-stats { flex-wrap: wrap; gap: 20px; }
+        }
+    </style>
+    <!-- Firebase (Realtime Database) — enables live sync of products/prices across
+         different visitors and devices, not just tabs on the same device.
+         See the FIREBASE_CONFIG note in the main script for setup steps. -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+</head>
+<body>
+
+    <!-- OVERLAY -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- HEADER / NAVBAR -->
+    <header>
+        <div class="container navbar">
+            <a href="#" class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M8 2 4 6l2 3v11h12V9l2-3-4-4-4 3-4-3Z" fill="#ffffff"/>
+                    <path d="M8 2 4 6l2 3v11h12V9l2-3-4-4-4 3-4-3Z" stroke="#0d0d0d" stroke-width="0.6" fill="none"/>
+                </svg>
+                FIFA <span>STORE</span>
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero" class="active">الرئيسية</a></li>
+                <li><a href="#products">القمصان</a></li>
+                <li><a href="#features">مميزاتنا</a></li>
+                <li><a href="#about">عن المتجر</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="icon-btn" id="userBtn" title="تسجيل الدخول / حسابي">
+                    <i class="fa-solid fa-user"></i>
+                </button>
+                <button class="icon-btn" id="adminBtn" title="لوحة تحكم الأدمن" style="display:none;">
+                    <i class="fa-solid fa-user-gear"></i>
+                </button>
+                <button class="icon-btn" id="cartBtn" title="سلة التسوق">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-badge" id="heroBadgeText">المتجر الرياضي الأفضل في مصر 🇪🇬</span>
+                <h1 class="hero-title" id="heroTitleText">فيفا ستور.. أصل القمصان الرياضية في مصر!</h1>
+                <p class="hero-description" id="heroDescText">
+                    أكبر تشكيلة من أطقم وقمصان الأندية والمنتخابات العالمية بـ أعلى جودة وخامة خيالية بأفضل الأسعار (من 300 إلى 320 ج.م).
+                </p>
+                <div class="hero-btns">
+                    <a href="#products" class="btn btn-primary"><i class="fa-solid fa-bag-shopping"></i> تسوق الآن</a>
+                    <a href="https://wa.me/201557550837" target="_blank" class="btn btn-outline" id="heroWhatsappBtn"><i class="fa-brands fa-whatsapp"></i> تواصل معنا</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <h3>+50,000</h3>
+                        <p>عميل واثق بنا</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>100%</h3>
+                        <p>خامة وجودة عالمية</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>300-320</h3>
+                        <p>أسعار موحدة للقطعة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fa-solid fa-truck-fast feature-icon"></i>
+                    <h3 class="feature-title" id="feature1Title">توصيل سريع</h3>
+                    <p class="feature-desc" id="feature1Desc">شحن متوفر لكافة المحافظات مع المعاينة قبل الاستلام.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-tags feature-icon"></i>
+                    <h3 class="feature-title" id="feature2Title">أفضل أسعار مصر</h3>
+                    <p class="feature-desc" id="feature2Desc">جميع التيشرتات بأسعار تنافسية بين 300 و 320 ج.م فقط.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-shield-halved feature-icon"></i>
+                    <h3 class="feature-title" id="feature3Title">خامة عالية الدقة</h3>
+                    <p class="feature-desc" id="feature3Desc">أطقم رياضية مريحة مع كافة التطريزات والشعارات المعتمدة.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-brands fa-whatsapp feature-icon"></i>
+                    <h3 class="feature-title" id="feature4Title">طلب سريع عبر الواتساب</h3>
+                    <p class="feature-desc" id="feature4Desc">تأكيد فوري للطلبات عبر خدمة العملاء على الواتساب.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS SECTION -->
+    <section class="products-section" id="products">
+        <div class="container">
+            <div class="section-title">
+                <h2>تشكيلة قمصان فيفا ستور</h2>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">الكل</button>
+                <button class="filter-btn" data-filter="clubs">الأندية الأوروبية</button>
+                <button class="filter-btn" data-filter="national">المنتخبات</button>
+                <button class="filter-btn" data-filter="retro">الكلاسيكيات (Retro)</button>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </section>
+
+    <!-- PROMO BANNER -->
+    <section class="promo-banner">
+        <div class="container">
+            <div class="banner-box">
+                <div class="banner-text">
+                    <h3 id="bannerTitleText">أطلب قميصك المفضّل الآن بـ 300 - 320 ج.م فقط!</h3>
+                    <p id="bannerDescText">تواصل مع فريق المبيعات مباشرة عبر الواتساب لحجز مقاسك.</p>
+                </div>
+                <a href="https://wa.me/201557550837" target="_blank" class="btn btn-primary" id="bannerWhatsappBtn"><i class="fa-brands fa-whatsapp"></i> <span id="bannerWhatsappText">اطلب عبر 01557550837</span></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CART SIDEBAR -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>سلة التسوق (<span id="cartHeaderCount">0</span>)</h3>
+            <button class="close-btn" id="closeCartBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="cart-body" id="cartBody"></div>
+        <div class="cart-footer">
+            <div class="shipping-select-box" style="margin-bottom:15px;">
+                <h4 style="font-size:0.9rem; margin-bottom:8px;">أسعار الشحن لجميع المحافظات</h4>
+                <select id="cartGovernorate" class="form-control">
+                    <option value="" disabled selected>اختر محافظتك</option>
+                </select>
+            </div>
+            <div class="cart-total" style="font-size:0.95rem; font-weight:600;">
+                <span>الشحن:</span>
+                <span id="cartShippingPrice">— ج.م</span>
+            </div>
+            <div class="cart-total">
+                <span>الإجمالي:</span>
+                <span id="cartTotalPrice">0 ج.م</span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" id="checkoutBtn" disabled title="اختر محافظتك أولاً">
+                <i class="fa-brands fa-whatsapp"></i> إتمام الطلب عبر WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- QUICK VIEW MODAL -->
+    <div class="modal" id="quickViewModal">
+        <button class="close-btn" style="position: absolute; top: 15px; left: 15px;" id="closeQVBtn"><i class="fa-solid fa-xmark"></i></button>
+        <div class="quick-view-grid" id="qvContent"></div>
+    </div>
+
+    <!-- REGISTER / ACCOUNT MODAL -->
+    <div class="modal" id="registerModal">
+        <button class="close-btn" style="position: absolute; top: 15px; left: 15px;" id="closeRegisterBtn"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="font-weight:800; margin-bottom:20px;"><i class="fa-solid fa-user"></i> تسجيل الدخول / إنشاء حساب</h2>
+
+        <div id="registerFormArea">
+            <div class="form-group">
+                <label>الاسم</label>
+                <input type="text" id="regName" class="form-control" placeholder="اكتب اسمك">
+            </div>
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="regEmail" class="form-control" placeholder="example@email.com">
+            </div>
+            <button class="btn btn-primary" id="regSubmitBtn" style="width:100%; margin-top:5px;"><i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول</button>
+        </div>
+
+        <div id="registerLoggedInArea" style="display:none; text-align:center;">
+            <p style="margin-bottom:5px; color: var(--text-muted);">مسجل دخول باسم:</p>
+            <h3 id="regLoggedName" style="margin-bottom:5px;"></h3>
+            <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;" id="regLoggedEmail"></p>
+            <button class="remove-item" id="regLogoutBtn"><i class="fa-solid fa-right-from-bracket"></i> تسجيل خروج</button>
+        </div>
+
+        <p id="regStatusText" style="margin-top:15px; font-size:0.8rem; color: var(--text-muted); text-align:center;"></p>
+    </div>
+
+    <!-- ADMIN MODAL (FULL SITE CONTROL) -->
+    <div class="modal" id="adminModal">
+        <button class="close-btn" style="position: absolute; top: 15px; left: 15px;" id="closeAdminBtn"><i class="fa-solid fa-xmark"></i></button>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+            <h2 style="font-weight:800;"><i class="fa-solid fa-sliders"></i> لوحة تحكم المتجر (Admin)</h2>
+            <button class="remove-item" id="adminLogoutBtn" style="font-size:0.85rem;"><i class="fa-solid fa-right-from-bracket"></i> تسجيل خروج</button>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom:10px; flex-wrap:wrap;">
+            <button class="btn btn-outline" style="padding:5px 15px;" id="tabProductBtn">إدارة المنتجات</button>
+            <button class="btn btn-outline" style="padding:5px 15px;" id="tabHeroBtn">تعديل الرئيسية (Hero)</button>
+            <button class="btn btn-outline" style="padding:5px 15px;" id="tabSettingsBtn">إعدادات عامة</button>
+            <button class="btn btn-outline" style="padding:5px 15px;" id="tabShippingBtn">أسعار الشحن</button>
+        </div>
+
+        <!-- Section 1: Manage Products (List + Add/Edit form) -->
+        <div id="productAdminSection">
+            <h3 style="margin-bottom:12px; font-size:1rem;">المنتجات الحالية (<span id="adminProductCount">0</span>)</h3>
+            <div id="adminProductsList" style="max-height:220px; overflow-y:auto; margin-bottom:25px; border:1px solid var(--border-color); border-radius:8px;"></div>
+
+            <h3 id="productFormTitle" style="margin-bottom:12px; font-size:1rem;">إضافة منتج جديد</h3>
+            <div class="form-group">
+                <label>اسم القميص / المنتج</label>
+                <input type="text" id="prodTitle" class="form-control" placeholder="مثال: تيشرت ميلان الأساسي">
+            </div>
+            <div class="form-group">
+                <label>الفئة</label>
+                <select id="prodCategory" class="form-control">
+                    <option value="clubs">الأندية الأوروبية</option>
+                    <option value="national">المنتخبات</option>
+                    <option value="retro">الكلاسيكيات (Retro)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>السعر (ج.م) [بين 300 و 320]</label>
+                <input type="number" id="prodPrice" class="form-control" value="310" min="300" max="320">
+            </div>
+            
+            <div class="form-group">
+                <label>اختر صورة المنتج من جهازك (ملف)</label>
+                <input type="file" id="prodFileInput" class="form-control" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label>أو ضع رابط صورة مباشر (URL)</label>
+                <input type="text" id="prodImageUrl" class="form-control" placeholder="https://...">
+            </div>
+
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-primary" id="saveProductBtn"><i class="fa-solid fa-plus"></i> إضافة المنتج للمتجر</button>
+                <button class="btn btn-outline" id="cancelEditBtn" style="display:none;">إلغاء التعديل</button>
+            </div>
+        </div>
+
+        <!-- Section 2: Edit Hero Text -->
+        <div id="heroAdminSection" style="display: none;">
+            <div class="form-group">
+                <label>الشعار العلوي (Badge)</label>
+                <input type="text" id="inputHeroBadge" class="form-control" value="المتجر الرياضي الأفضل في مصر 🇪🇬">
+            </div>
+            <div class="form-group">
+                <label>العنوان الرئيسي (Hero Title)</label>
+                <input type="text" id="inputHeroTitle" class="form-control" value="فيفا ستور.. أصل القمصان الرياضية في مصر!">
+            </div>
+            <div class="form-group">
+                <label>الوصف (Hero Description)</label>
+                <textarea id="inputHeroDesc" class="form-control" rows="3">أكبر تشكيلة من أطقم وقمصان الأندية والمنتخابات العالمية بـ أعلى جودة وخامة خيالية بأفضل الأسعار (من 300 إلى 320 ج.م).</textarea>
+            </div>
+            <button class="btn btn-primary" id="saveHeroBtn"><i class="fa-solid fa-floppy-disk"></i> حفظ التغييرات النصية</button>
+        </div>
+
+        <!-- Section 3: General Site Settings -->
+        <div id="settingsAdminSection" style="display: none;">
+            <div class="form-group">
+                <label>رقم الواتساب لاستقبال الطلبات (بدون +)</label>
+                <input type="text" id="settingsWhatsapp" class="form-control" placeholder="2015XXXXXXXX">
+            </div>
+            <div class="form-group">
+                <label>رقم الهاتف الظاهر في الفوتر</label>
+                <input type="text" id="settingsPhone" class="form-control" placeholder="0100XXXXXXX">
+            </div>
+            <div class="form-group">
+                <label>رابط الفيسبوك</label>
+                <input type="text" id="settingsFacebook" class="form-control" placeholder="https://facebook.com/...">
+            </div>
+            <div class="form-group">
+                <label>رابط الانستجرام</label>
+                <input type="text" id="settingsInstagram" class="form-control" placeholder="https://instagram.com/...">
+            </div>
+            <div class="form-group">
+                <label>رابط التيك توك</label>
+                <input type="text" id="settingsTiktok" class="form-control" placeholder="https://tiktok.com/@...">
+            </div>
+            <div class="form-group">
+                <label>عنوان بانر العرض الترويجي</label>
+                <input type="text" id="settingsBannerTitle" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>وصف بانر العرض الترويجي</label>
+                <input type="text" id="settingsBannerDesc" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>نبذة "عن المتجر" في الفوتر</label>
+                <textarea id="settingsFooterAbout" class="form-control" rows="3"></textarea>
+            </div>
+            <h3 style="margin: 20px 0 10px; font-size:1rem;">نصوص كروت المميزات الأربعة</h3>
+            <div class="form-group"><label>عنوان الميزة 1</label><input type="text" id="settingsF1Title" class="form-control"></div>
+            <div class="form-group"><label>وصف الميزة 1</label><input type="text" id="settingsF1Desc" class="form-control"></div>
+            <div class="form-group"><label>عنوان الميزة 2</label><input type="text" id="settingsF2Title" class="form-control"></div>
+            <div class="form-group"><label>وصف الميزة 2</label><input type="text" id="settingsF2Desc" class="form-control"></div>
+            <div class="form-group"><label>عنوان الميزة 3</label><input type="text" id="settingsF3Title" class="form-control"></div>
+            <div class="form-group"><label>وصف الميزة 3</label><input type="text" id="settingsF3Desc" class="form-control"></div>
+            <div class="form-group"><label>عنوان الميزة 4</label><input type="text" id="settingsF4Title" class="form-control"></div>
+            <div class="form-group"><label>وصف الميزة 4</label><input type="text" id="settingsF4Desc" class="form-control"></div>
+
+            <button class="btn btn-primary" id="saveSettingsBtn"><i class="fa-solid fa-floppy-disk"></i> حفظ كل الإعدادات</button>
+        </div>
+
+        <!-- Section 4: Shipping Prices per Governorate -->
+        <div id="shippingAdminSection" style="display: none;">
+            <h3 style="margin-bottom:12px; font-size:1rem;">سعر الشحن لكل محافظة (ج.م)</h3>
+            <div id="shippingInputsContainer"></div>
+            <button class="btn btn-primary" id="saveShippingBtn"><i class="fa-solid fa-floppy-disk"></i> حفظ أسعار الشحن</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer id="about">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="logo" style="margin-bottom: 15px;">
+                        <svg class="logo-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M8 2 4 6l2 3v11h12V9l2-3-4-4-4 3-4-3Z" fill="#ffffff"/>
+                            <path d="M8 2 4 6l2 3v11h12V9l2-3-4-4-4 3-4-3Z" stroke="#0d0d0d" stroke-width="0.6" fill="none"/>
+                        </svg>
+                        FIFA <span>STORE</span>
+                    </a>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;" id="footerAboutText">
+                        متجر FIFA STORE هو الخيار الأول لجميع عشاق ومحبي كرة القدم في مصر للحصول على أحدث التيشرتات والقمصان الرياضية بأسعار تنافسية (300 - 320 ج.م).
+                    </p>
+                    <div class="social-links">
+                        <a href="https://wa.me/201557550837" class="social-link" target="_blank" id="footerWhatsappLink" title="واتساب"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/share/1BfiRc7gJk/" class="social-link" target="_blank" rel="noopener noreferrer" id="footerFacebookLink" title="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/fif_astore01?igsh=Y29yeDd5OGpkdXly&igsi=Y29yeDd5OGpkdXly" class="social-link" target="_blank" rel="noopener noreferrer" id="footerInstagramLink" title="انستجرام"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@fifastore01?is_from_webapp=1&sender_device=pc" class="social-link" target="_blank" rel="noopener noreferrer" id="footerTiktokLink" title="تيك توك"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>روابط السريعة</h4>
+                    <ul>
+                        <li><a href="#hero">الرئيسية</a></li>
+                        <li><a href="#products">المنتجات والقمصان</a></li>
+                        <li><a href="#features">مميزات الخدمة</a></li>
+                        <li><a href="#about">من نحن</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>خدمة العملاء</h4>
+                    <ul>
+                        <li><a href="#">سياسة الاستبدال والاسترجاع</a></li>
+                        <li><a href="#">طرق الدفع والتوصيل</a></li>
+                        <li><a href="#">الأسئلة الشائعة</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>تواصل معنا مباشرة</h4>
+                    <ul style="color: var(--text-muted); font-size: 0.9rem;">
+                        <li style="margin-bottom: 10px;"><i class="fa-solid fa-location-dot"></i> القاهرة / جميع محافظات مصر</li>
+                        <li style="margin-bottom: 10px;"><i class="fa-solid fa-phone"></i> <span id="footerPhoneText">01080536635</span></li>
+                        <li style="margin-bottom: 10px;"><i class="fa-brands fa-whatsapp"></i> <span id="footerWhatsappText">01080536635</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>جميع الحقوق محفوظة &copy; 2026 لموقع <strong>FIFA STORE</strong> - أفضل متجر تيشرتات في مصر.</p>
+                <a href="#" id="adminLoginLink" style="display:inline-block; margin-top:10px; color: var(--text-muted); font-size:0.75rem; opacity:0.6;">إدارة الموقع</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTopBtn" title="العودة لأعلى الصفحة"><i class="fa-solid fa-arrow-up"></i></button>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ==========================================
+           0. FIREBASE SETUP (REAL LIVE SYNC ACROSS DEVICES)
+           ==========================================
+           By default the site works fully offline using localStorage, so nothing
+           breaks if you skip this. But localStorage only syncs between tabs on the
+           SAME device/browser — two different customers on two different phones
+           won't see each other's updates without a page refresh.
+
+           To make admin changes (products, settings, shipping prices) appear
+           instantly for EVERY visitor on any device, connect a free Firebase
+           Realtime Database:
+             1. Go to https://console.firebase.google.com and create a free project.
+             2. In the project, open "Build > Realtime Database" and click
+                "Create Database" (start in test mode for a quick setup).
+             3. Go to Project Settings > General > "Your apps" > add a Web app,
+                and copy the firebaseConfig object it gives you.
+             4. Paste those values into FIREBASE_CONFIG below (replace the null
+                values). Save and reload the page — that's it, no other code
+                changes needed.
+           Until you do this, the site automatically falls back to the
+           same-device localStorage sync from before. */
+        const FIREBASE_CONFIG = {
+            apiKey: null,
+            authDomain: null,
+            databaseURL: null,
+            projectId: null,
+            storageBucket: null,
+            messagingSenderId: null,
+            appId: null
+        };
+
+        let firebaseDB = null;
+        let isFirebaseConfigured = false;
+        try {
+            if (FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.databaseURL && typeof firebase !== 'undefined') {
+                firebase.initializeApp(FIREBASE_CONFIG);
+                firebaseDB = firebase.database();
+                isFirebaseConfigured = true;
+            }
+        } catch (err) {
+            console.warn('Firebase not configured / failed to initialize — falling back to localStorage-only sync.', err);
+            firebaseDB = null;
+            isFirebaseConfigured = false;
+        }
+
+        /* Helper: persist a piece of shared store data to localStorage AND,
+           when configured, push it to Firebase so every visitor gets it live. */
+        function syncSharedData(key, value) {
+            localStorage.setItem(key, JSON.stringify(value));
+            if (isFirebaseConfigured) {
+                firebaseDB.ref(key).set(value).catch(err => console.warn('Firebase sync failed for', key, err));
+            }
+        }
+
+        /* 1. EXPANDED PRODUCTS LIST (PRICES BETWEEN 300 & 320 EGP) */
+        const initialProducts = [
+            {
+                id: 1,
+                title: "تيشرت ريال مدريد الأساسي 2026",
+                category: "clubs",
+                price: 320,
+                badge: "الأكثر مبيعاً",
+                rating: 5,
+                image: "https://i.ebayimg.com/images/g/UKcAAeSwObdqZMNo/s-l1600.webp",
+                description: "القميص الملكي الأبيض المصمم بخصائص تهوية وتبريد متطورة عالية الجودة."
+            },
+            {
+                id: 2,
+                title: "تيشرت برشلونه الاحتياطي",
+                category: "clubs",
+                price: 310,
+                badge: "جديد",
+                rating: 5,
+                image: "https://i.ebayimg.com/images/g/lncAAeSwjYdqacd0/s-l1600.webp",
+                description: "قميص البلاوغرانا بتصميمه الكلاسيكي المميز والألوان الزاهية."
+            },
+            {
+                id: 3,
+                title: "تيشرت منتخب مصر الأساسي 2026",
+                category: "national",
+                price: 300,
+                badge: "النسخة الأصلية",
+                rating: 5,
+                image: "https://i.ebayimg.com/images/g/sO4AAeSw4ABqBkOt/s-l1600.webp",
+                description: "قميص الفراعنة باللون الأحمر الملكي والتفاصيل الدقيقة."
+            },
+            {
+                id: 4,
+                title: "تيشرت مانشستر سيتي الاحتياطي 2026",
+                category: "clubs",
+                price: 320,
+                badge: "مميز",
+                rating: 4,
+                image: "https://i.ebayimg.com/images/g/dksAAeSwwTlqgwqA/s-l1600.webp",
+                description: "قميص الأبطال السماوي بخصائص نسيج خفيفة ومريحة."
+            },
+            {
+                id: 5,
+                title: "تيشرت الأرجنتين ريترو 1994",
+                category: "retro",
+                price: 320,
+                badge: "Retro Classic",
+                rating: 5,
+                image: "https://i.ebayimg.com/images/g/9yQAAOSw7gdllFun/s-l1600.webp",
+                description: "نسخة ريترو حصرية لقميص أسطورة الكرة مارادونا بتفاصيل التسعينات الخالدة."
+            },
+            {
+                id: 6,
+                title: "تيشرت منتخب البرازيل 2026",
+                category: "national",
+                price: 320,
+                badge: "جديد",
+                rating: 5,
+                image: "https://i.ebayimg.com/images/g/9KoAAeSwzmFqZJEP/s-l1600.webp",
+                description: "القميص الأصفر الذهبي لمشجعي شبيبة السامبا."
+            },
+            {
+                id: 7,
+                title: "تيشرت بايرن ميونخ الأساسي",
+                category: "clubs",
+                price: 320,
+                badge: "الأكثر طلباً",
+                rating: 5,
+                image: "https://i.ebayimg.com/images/g/hiYAAeSwBXxqfDjK/s-l1600.webp",
+                description: "القميص البافاري الأحمر الناري بتصميم عصري وأنسجة مريحة."
+            },
+            {
+                id: 8,
+                title: "تيشرت ليفربول الأساسي 2026",
+                category: "clubs",
+                price: 320,
+                badge: "حصري",
+                rating: 5,
+                image: "https://cdn.salla.sa/QdorpX/9cb45848-e8f8-44f5-ad3f-ff51f43f27b7-1000x1000-arZ8U03J14WHbfnEhsxhPAK3ehyzesnqpRjvER22.jpg",
+                description: "قميص الريدز باللون الأحمر الشهير والتطريز الفاخر."
+            },
+            {
+                id: 9,
+                title: "تيشرت فرنسا 1998 ريترو",
+                category: "retro",
+                price: 320,
+                badge: "Retro Classic",
+                rating: 5,
+                image: "https://cdn.salla.sa/Arje/965b9e59-8a72-4b4b-8fde-70a4787c8244-750x1000-9z5LrNTgTsViWSF6R24BvFvqsKCLcAW8Wr25yHtt.jpg",
+                description: "قميص أبطال العالم لعام 1998 بتصميم زيدان الشهير."
+            },
+            {
+                id: 10,
+                title: "تيشرت الأهلي المصري 2026",
+                category: "clubs",
+                price: 300,
+                badge: "الأكثر مبيعاً بمصر",
+                rating: 5,
+                image: "https://media.gemini.media/img/original/2026/7/27/2026_7_27_12_12_2_343.webp",
+                description: "قميص نادي القرن الأحمر المميز بالشعارات عالية الخامة."
+            },
+            {
+                id: 11,
+                title: "تيشرت برشلونه 2027",
+                category: "clubs",
+                price: 320,
+                badge: "جديد",
+                rating: 5,
+                image: "https://i.ebayimg.com/images/g/jpMAAeSwe4RqY7-i/s-l1600.webp",
+                description: "قميص مدرسة الفن والهندسة بالأبيض مع الخطين الحمرين."
+            },
+            {
+                id: 12,
+                title: "تيشرت إسي ميلان ريترو 2007",
+                category: "retro",
+                price: 320,
+                badge: "Retro Classic",
+                rating: 5,
+                image: "https://i.ebayimg.com/images/g/IZIAAeSwrClppC-9/s-l1600.webp",
+                description: "قميص أبطال أوروبا 2007 بتصميم كاكا الخالد."
+            }
+        ];
+
+        /* LOCALSTORAGE STATE MANAGEMENT */
+        let products = JSON.parse(localStorage.getItem('fifa_products')) || initialProducts;
+        let cart = JSON.parse(localStorage.getItem('fifa_cart')) || [];
+        let selectedSize = "M";
+        let editingProductId = null;
+        let currentUser = JSON.parse(localStorage.getItem('fifa_current_user')) || null;
+
+        /* SITE SETTINGS (editable content: contact info, social links, banner, footer, features) */
+        const ADMIN_EMAIL = 'nourhasanin10@gmail.com';
+        const defaultSettings = {
+            whatsappNumber: '201557550837',
+            phoneNumber: '01080536635',
+            facebookUrl: 'https://www.facebook.com/share/1BfiRc7gJk/',
+            instagramUrl: 'https://www.instagram.com/fif_astore01?igsh=Y29yeDd5OGpkdXly&igsi=Y29yeDd5OGpkdXly',
+            tiktokUrl: 'https://www.tiktok.com/@fifastore01?is_from_webapp=1&sender_device=pc',
+            bannerTitle: 'أطلب قميصك المفضّل الآن بـ 300 - 320 ج.م فقط!',
+            bannerDesc: 'تواصل مع فريق المبيعات مباشرة عبر الواتساب لحجز مقاسك.',
+            footerAbout: 'متجر FIFA STORE هو الخيار الأول لجميع عشاق ومحبي كرة القدم في مصر للحصول على أحدث التيشرتات والقمصان الرياضية بأسعار تنافسية (300 - 320 ج.م).',
+            f1Title: 'توصيل سريع', f1Desc: 'شحن متوفر لكافة المحافظات مع المعاينة قبل الاستلام.',
+            f2Title: 'أفضل أسعار مصر', f2Desc: 'جميع التيشرتات بأسعار تنافسية بين 300 و 320 ج.م فقط.',
+            f3Title: 'خامة عالية الدقة', f3Desc: 'أطقم رياضية مريحة مع كافة التطريزات والشعارات المعتمدة.',
+            f4Title: 'طلب سريع عبر الواتساب', f4Desc: 'تأكيد فوري للطلبات عبر خدمة العملاء على الواتساب.'
+        };
+        let settings = { ...defaultSettings, ...(JSON.parse(localStorage.getItem('fifa_settings')) || {}) };
+
+        /* DOM ELEMENTS */
+        const productsGrid = document.getElementById('productsGrid');
+        const cartBtn = document.getElementById('cartBtn');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const closeCartBtn = document.getElementById('closeCartBtn');
+        const overlay = document.getElementById('overlay');
+        const cartCount = document.getElementById('cartCount');
+        const cartHeaderCount = document.getElementById('cartHeaderCount');
+        const cartBody = document.getElementById('cartBody');
+        const cartTotalPrice = document.getElementById('cartTotalPrice');
+        const quickViewModal = document.getElementById('quickViewModal');
+        const closeQVBtn = document.getElementById('closeQVBtn');
+        const qvContent = document.getElementById('qvContent');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        const backToTopBtn = document.getElementById('backToTopBtn');
+
+        // Admin Elements
+        const adminBtn = document.getElementById('adminBtn');
+        const adminModal = document.getElementById('adminModal');
+        const closeAdminBtn = document.getElementById('closeAdminBtn');
+        const tabHeroBtn = document.getElementById('tabHeroBtn');
+        const tabProductBtn = document.getElementById('tabProductBtn');
+        const tabSettingsBtn = document.getElementById('tabSettingsBtn');
+        const heroAdminSection = document.getElementById('heroAdminSection');
+        const productAdminSection = document.getElementById('productAdminSection');
+        const settingsAdminSection = document.getElementById('settingsAdminSection');
+        const tabShippingBtn = document.getElementById('tabShippingBtn');
+        const shippingAdminSection = document.getElementById('shippingAdminSection');
+        const shippingInputsContainer = document.getElementById('shippingInputsContainer');
+        const saveShippingBtn = document.getElementById('saveShippingBtn');
+        const cartGovernorate = document.getElementById('cartGovernorate');
+        const cartShippingPrice = document.getElementById('cartShippingPrice');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const saveHeroBtn = document.getElementById('saveHeroBtn');
+        const saveProductBtn = document.getElementById('saveProductBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const productFormTitle = document.getElementById('productFormTitle');
+        const adminProductsList = document.getElementById('adminProductsList');
+        const adminProductCount = document.getElementById('adminProductCount');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+        const adminLoginLink = document.getElementById('adminLoginLink');
+        const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+
+        // Register / Account Elements
+        const userBtn = document.getElementById('userBtn');
+        const registerModal = document.getElementById('registerModal');
+        const closeRegisterBtn = document.getElementById('closeRegisterBtn');
+        const registerFormArea = document.getElementById('registerFormArea');
+        const registerLoggedInArea = document.getElementById('registerLoggedInArea');
+        const regName = document.getElementById('regName');
+        const regEmail = document.getElementById('regEmail');
+        const regSubmitBtn = document.getElementById('regSubmitBtn');
+        const regLoggedName = document.getElementById('regLoggedName');
+        const regLoggedEmail = document.getElementById('regLoggedEmail');
+        const regLogoutBtn = document.getElementById('regLogoutBtn');
+        const regStatusText = document.getElementById('regStatusText');
+
+        /* 2. RENDER PRODUCTS */
+        function renderProducts(filter = 'all') {
+            productsGrid.innerHTML = '';
+            const filteredProducts = filter === 'all' 
+                ? products 
+                : products.filter(p => p.category === filter);
+
+            if (filteredProducts.length === 0) {
+                productsGrid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-shirt" style="font-size:2rem; margin-bottom:15px;"></i><p>لا توجد منتجات في هذا القسم حالياً.</p></div>';
+                return;
+            }
+
+            filteredProducts.forEach(product => {
+                const productEl = document.createElement('div');
+                productEl.className = 'product-card';
+                productEl.innerHTML = `
+                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                    <div class="product-image-container">
+                        <img src="${product.image}" alt="${product.title}" class="product-image" loading="lazy">
+                        <div class="product-actions">
+                            <button class="action-btn" onclick="openQuickView(${product.id})" title="معاينة سريعة"><i class="fa-solid fa-eye"></i></button>
+                            <button class="action-btn" onclick="addToCart(${product.id})" title="إضافة للسلة"><i class="fa-solid fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">${getCategoryName(product.category)}</span>
+                        <h3 class="product-title">${product.title}</h3>
+                        <div class="product-rating">
+                            ${'<i class="fa-solid fa-star"></i>'.repeat(product.rating || 5)}
+                        </div>
+                        <div class="product-bottom">
+                            <div class="product-price">${product.price} ج.م</div>
+                            <button class="btn btn-outline" style="padding: 6px 14px; font-size: 0.8rem;" onclick="addToCart(${product.id})">أضف للسلة</button>
+                        </div>
+                    </div>
+                `;
+                productsGrid.appendChild(productEl);
+            });
+        }
+
+        function getCategoryName(cat) {
+            switch(cat) {
+                case 'clubs': return 'الأندية الأوروبية';
+                case 'national': return 'المنتخبات الوطنية';
+                case 'retro': return 'الكلاسيكيات Retro';
+                default: return 'عام';
+            }
+        }
+
+        /* 3. CART SYSTEM */
+        function addToCart(id, size = 'M') {
+            const product = products.find(p => p.id === id);
+            const existingItem = cart.find(item => item.id === id && item.size === size);
+
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    qty: 1,
+                    size: size
+                });
+            }
+
+            saveCart();
+            updateCartUI();
+            openCart();
+        }
+
+        function updateCartUI() {
+            cartBody.innerHTML = '';
+            let total = 0;
+            let totalCount = 0;
+
+            if (cart.length === 0) {
+                cartBody.innerHTML = '<p style="text-align:center; color: var(--text-muted); margin-top:50px;">سلة التسوق فارغة حالياً.</p>';
+            } else {
+                cart.forEach((item, index) => {
+                    total += item.price * item.qty;
+                    totalCount += item.qty;
+
+                    const cartItemEl = document.createElement('div');
+                    cartItemEl.className = 'cart-item';
+                    cartItemEl.innerHTML = `
+                        <img src="${item.image}" class="cart-item-img" alt="${item.title}">
+                        <div class="cart-item-details">
+                            <div class="cart-item-title">${item.title}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">المقاس: ${item.size}</div>
+                            <div class="cart-item-price">${item.price} ج.م</div>
+                            <div class="cart-item-controls">
+                                <div class="quantity-control">
+                                    <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
+                                    <span class="qty-value">${item.qty}</span>
+                                    <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                                </div>
+                                <button class="remove-item" onclick="removeItem(${index})"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                    cartBody.appendChild(cartItemEl);
+                });
+            }
+
+            cartCount.textContent = totalCount;
+            cartHeaderCount.textContent = totalCount;
+
+            const shippingCost = selectedGovernorate ? (shippingPrices[selectedGovernorate] || 0) : 0;
+            cartShippingPrice.textContent = selectedGovernorate ? `${shippingCost} ج.م` : '— ج.م';
+            cartTotalPrice.textContent = `${total + shippingCost} ج.م`;
+
+            // Checkout is only allowed once the customer picked a governorate,
+            // and the cart isn't empty.
+            checkoutBtn.disabled = !selectedGovernorate || cart.length === 0;
+        }
+
+        function changeQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            saveCart();
+            updateCartUI();
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            saveCart();
+            updateCartUI();
+        }
+
+        function saveCart() {
+            localStorage.setItem('fifa_cart', JSON.stringify(cart));
+        }
+
+        function openCart() {
+            cartSidebar.classList.add('active');
+            overlay.classList.add('active');
+        }
+
+        function closeCart() {
+            cartSidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        /* 4. QUICK VIEW MODAL */
+        function openQuickView(id) {
+            const product = products.find(p => p.id === id);
+            qvContent.innerHTML = `
+                <div>
+                    <img src="${product.image}" alt="${product.title}" class="qv-image">
+                </div>
+                <div class="qv-details">
+                    <h2 class="qv-title">${product.title}</h2>
+                    <div class="qv-price">${product.price} ج.م</div>
+                    <p class="qv-desc">${product.description}</p>
+                    
+                    <div class="size-selector">
+                        <label>اختر المقاس:</label>
+                        <div class="size-options">
+                            <button class="size-btn ${selectedSize==='S'?'active':''}" onclick="selectSize(this, 'S')">S</button>
+                            <button class="size-btn ${selectedSize==='M'?'active':''}" onclick="selectSize(this, 'M')">M</button>
+                            <button class="size-btn ${selectedSize==='L'?'active':''}" onclick="selectSize(this, 'L')">L</button>
+                            <button class="size-btn ${selectedSize==='XL'?'active':''}" onclick="selectSize(this, 'XL')">XL</button>
+                            <button class="size-btn ${selectedSize==='XXL'?'active':''}" onclick="selectSize(this, 'XXL')">XXL</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="addToCart(${product.id}, '${selectedSize}'); closeQV();">
+                        <i class="fa-solid fa-cart-plus"></i> إضافة للسلة الآن
+                    </button>
+                </div>
+            `;
+            quickViewModal.classList.add('active');
+            overlay.classList.add('active');
+        }
+
+        function selectSize(btn, size) {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedSize = size;
+        }
+
+        function closeQV() {
+            quickViewModal.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        /* 5. WHATSAPP CHECKOUT (CONNECTED TO 01557550837) */
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('سلة التسوق فارغة!');
+                return;
+            }
+            if (!selectedGovernorate) {
+                alert('من فضلك اختر محافظتك أولاً قبل إتمام الطلب.');
+                return;
+            }
+
+            let phone = settings.whatsappNumber; 
+            let message = "مرحباً FIFA STORE، أود طلب القمصان التالية:\n\n";
+
+            let total = 0;
+            cart.forEach((item, i) => {
+                let subtotal = item.price * item.qty;
+                total += subtotal;
+                message += `${i+1}. ${item.title} (مقاس: ${item.size}) - الكمية: ${item.qty} - السعر: ${subtotal} ج.م\n`;
+            });
+
+            const shippingCost = shippingPrices[selectedGovernorate] || 0;
+            message += `\nالمحافظة: ${selectedGovernorate}`;
+            message += `\nسعر الشحن: ${shippingCost} ج.م`;
+            message += `\nإجمالي المنتجات: ${total} ج.م`;
+            message += `\nالإجمالي الكلي (شامل الشحن): ${total + shippingCost} ج.م`;
+            message += `\n\nيرجى تأكيد الطلب وتحديد العنوان بالتفصيل للشحن.`;
+
+            let whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        });
+
+        /* 6. ADMIN AUTH (email-gated access — see note below) */
+        // NOTE: this is a client-side gate for convenience, not real security —
+        // anyone who reads the page source can see the check. It hides the
+        // controls from ordinary visitors and requires the right email to
+        // unlock editing, but it is not a substitute for a real server-side login.
+        function isAdmin() {
+            return localStorage.getItem('fifa_admin') === 'true';
+        }
+
+        function updateAdminUI() {
+            adminBtn.style.display = isAdmin() ? 'inline-flex' : 'none';
+        }
+
+        adminLoginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (isAdmin()) {
+                adminModal.classList.add('active');
+                overlay.classList.add('active');
+                populateSettingsForm();
+                renderAdminProductsList();
+                return;
+            }
+            const email = prompt('لتسجيل الدخول كأدمن، اكتب البريد الإلكتروني المصرح له:');
+            if (email === null) return;
+            if (email.trim().toLowerCase() === ADMIN_EMAIL) {
+                localStorage.setItem('fifa_admin', 'true');
+                updateAdminUI();
+                alert('تم تسجيل الدخول كأدمن بنجاح! يمكنك الآن التعديل على كل محتوى الموقع من زر لوحة التحكم بجانب السلة.');
+            } else {
+                alert('هذا البريد غير مصرح له بالدخول للوحة التحكم.');
+            }
+        });
+
+        adminLogoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('fifa_admin');
+            updateAdminUI();
+            adminModal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        /* 6b. NORMAL SIGN-UP / LOGIN — anyone can register with name + email.
+           If the email matches ADMIN_EMAIL, admin access is unlocked automatically. */
+        function updateUserUI() {
+            if (currentUser) {
+                userBtn.title = 'حسابي: ' + currentUser.name;
+                registerFormArea.style.display = 'none';
+                registerLoggedInArea.style.display = 'block';
+                regLoggedName.textContent = currentUser.name;
+                regLoggedEmail.textContent = currentUser.email;
+            } else {
+                userBtn.title = 'تسجيل الدخول / حسابي';
+                registerFormArea.style.display = 'block';
+                registerLoggedInArea.style.display = 'none';
+                regName.value = '';
+                regEmail.value = '';
+            }
+            regStatusText.textContent = '';
+        }
+
+        userBtn.addEventListener('click', () => {
+            registerModal.classList.add('active');
+            overlay.classList.add('active');
+            updateUserUI();
+        });
+
+        closeRegisterBtn.addEventListener('click', () => {
+            registerModal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        regSubmitBtn.addEventListener('click', () => {
+            const name = regName.value.trim();
+            const email = regEmail.value.trim().toLowerCase();
+
+            if (!name || !email || !email.includes('@')) {
+                regStatusText.textContent = 'من فضلك اكتب اسمك وبريد إلكتروني صحيح.';
+                return;
+            }
+
+            // Save/update the user in the local "users" list
+            const users = JSON.parse(localStorage.getItem('fifa_users')) || [];
+            const existingIdx = users.findIndex(u => u.email === email);
+            const userRecord = { name, email };
+            if (existingIdx > -1) users[existingIdx] = userRecord; else users.push(userRecord);
+            localStorage.setItem('fifa_users', JSON.stringify(users));
+
+            currentUser = userRecord;
+            localStorage.setItem('fifa_current_user', JSON.stringify(currentUser));
+
+            // Auto-grant admin access if this is the store owner's email
+            if (email === ADMIN_EMAIL) {
+                localStorage.setItem('fifa_admin', 'true');
+                updateAdminUI();
+                alert('أهلاً ' + name + '! تم التعرف على بريدك كصاحب الموقع وتفعيل صلاحيات الأدمن. زرار لوحة التحكم ظهر بجانب السلة.');
+            } else {
+                alert('أهلاً ' + name + '! تم تسجيل الدخول بنجاح.');
+            }
+
+            updateUserUI();
+            registerModal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        regLogoutBtn.addEventListener('click', () => {
+            currentUser = null;
+            localStorage.removeItem('fifa_current_user');
+            // Logging out also revokes admin access if it was tied to this session
+            localStorage.removeItem('fifa_admin');
+            updateAdminUI();
+            updateUserUI();
+        });
+
+        /* 6c. LIVE SYNC ACROSS OPEN TABS/WINDOWS ON THIS DEVICE
+           Whenever the admin adds/edits a product or changes settings in one tab,
+           every other open tab of the site updates instantly without a refresh —
+           this is a browser-level event, so it only syncs tabs on the same device;
+           other visitors' browsers still need a page load to see the update, since
+           this is a static site with no shared server/database. */
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'fifa_products') {
+                products = JSON.parse(e.newValue) || initialProducts;
+                renderProducts();
+                renderAdminProductsList();
+            } else if (e.key === 'fifa_settings') {
+                settings = { ...defaultSettings, ...(JSON.parse(e.newValue) || {}) };
+                applySettings();
+                populateSettingsForm();
+            } else if (e.key === 'fifa_shipping') {
+                shippingPrices = { ...defaultShippingPrices, ...(JSON.parse(e.newValue) || {}) };
+                renderCartGovernorateOptions();
+                renderShippingAdminInputs();
+                updateCartUI();
+            } else if (e.key === 'fifa_admin') {
+                updateAdminUI();
+            } else if (e.key === 'fifa_current_user') {
+                currentUser = JSON.parse(e.newValue) || null;
+                updateUserUI();
+            }
+        });
+
+        /* 6d. LIVE SYNC ACROSS DIFFERENT DEVICES/VISITORS (when Firebase is
+           configured — see FIREBASE_CONFIG near the top of this script).
+           Every visitor's browser listens for changes on these three shared
+           keys and updates instantly, no refresh needed, no matter which
+           device the admin made the change from. */
+        if (isFirebaseConfigured) {
+            firebaseDB.ref('fifa_products').on('value', (snapshot) => {
+                const val = snapshot.val();
+                if (val) {
+                    products = val;
+                    localStorage.setItem('fifa_products', JSON.stringify(products));
+                    renderProducts();
+                    renderAdminProductsList();
+                }
+            });
+            firebaseDB.ref('fifa_settings').on('value', (snapshot) => {
+                const val = snapshot.val();
+                if (val) {
+                    settings = { ...defaultSettings, ...val };
+                    localStorage.setItem('fifa_settings', JSON.stringify(settings));
+                    applySettings();
+                    populateSettingsForm();
+                }
+            });
+            firebaseDB.ref('fifa_shipping').on('value', (snapshot) => {
+                const val = snapshot.val();
+                if (val) {
+                    shippingPrices = { ...defaultShippingPrices, ...val };
+                    localStorage.setItem('fifa_shipping', JSON.stringify(shippingPrices));
+                    renderCartGovernorateOptions();
+                    renderShippingAdminInputs();
+                    updateCartUI();
+                }
+            });
+        }
+
+        /* 7. ADMIN PANEL (full content control: products, hero, site settings) */
+        adminBtn.addEventListener('click', () => {
+            if (!isAdmin()) return;
+            adminModal.classList.add('active');
+            overlay.classList.add('active');
+            populateSettingsForm();
+            renderAdminProductsList();
+        });
+
+        closeAdminBtn.addEventListener('click', () => {
+            adminModal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        function showAdminTab(tab) {
+            heroAdminSection.style.display = tab === 'hero' ? 'block' : 'none';
+            productAdminSection.style.display = tab === 'products' ? 'block' : 'none';
+            settingsAdminSection.style.display = tab === 'settings' ? 'block' : 'none';
+            shippingAdminSection.style.display = tab === 'shipping' ? 'block' : 'none';
+            if (tab === 'shipping') renderShippingAdminInputs();
+        }
+        tabHeroBtn.addEventListener('click', () => showAdminTab('hero'));
+        tabProductBtn.addEventListener('click', () => showAdminTab('products'));
+        tabSettingsBtn.addEventListener('click', () => showAdminTab('settings'));
+        tabShippingBtn.addEventListener('click', () => showAdminTab('shipping'));
+
+        // Save Hero Text
+        saveHeroBtn.addEventListener('click', () => {
+            document.getElementById('heroBadgeText').innerText = document.getElementById('inputHeroBadge').value;
+            document.getElementById('heroTitleText').innerText = document.getElementById('inputHeroTitle').value;
+            document.getElementById('heroDescText').innerText = document.getElementById('inputHeroDesc').value;
+            alert('تم تحديث النصوص الافتتاحية للمتجر بنجاح!');
+        });
+
+        /* --- Products: list, add, edit, delete --- */
+        function renderAdminProductsList() {
+            adminProductCount.textContent = products.length;
+            adminProductsList.innerHTML = products.map(p => `
+                <div style="display:flex; align-items:center; gap:10px; padding:10px; border-bottom:1px solid var(--border-color);">
+                    <img src="${p.image}" alt="${p.title}" style="width:44px;height:44px;object-fit:cover;border-radius:4px;flex-shrink:0;">
+                    <div style="flex-grow:1; min-width:0;">
+                        <div style="font-size:0.85rem; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${p.title}</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">${getCategoryName(p.category)} · ${p.price} ج.م</div>
+                    </div>
+                    <button class="action-btn" style="width:32px;height:32px;font-size:0.8rem;" onclick="startEditProduct(${p.id})" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                    <button class="action-btn" style="width:32px;height:32px;font-size:0.8rem; background-color:#ff4d4d;" onclick="deleteProduct(${p.id})" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('') || '<p style="padding:15px; color:var(--text-muted); font-size:0.85rem;">لا توجد منتجات بعد.</p>';
+        }
+
+        function resetProductForm() {
+            editingProductId = null;
+            document.getElementById('prodTitle').value = '';
+            document.getElementById('prodCategory').value = 'clubs';
+            document.getElementById('prodPrice').value = '310';
+            document.getElementById('prodImageUrl').value = '';
+            document.getElementById('prodFileInput').value = '';
+            productFormTitle.textContent = 'إضافة منتج جديد';
+            saveProductBtn.innerHTML = '<i class="fa-solid fa-plus"></i> إضافة المنتج للمتجر';
+            cancelEditBtn.style.display = 'none';
+        }
+
+        function startEditProduct(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            editingProductId = id;
+            document.getElementById('prodTitle').value = p.title;
+            document.getElementById('prodCategory').value = p.category;
+            document.getElementById('prodPrice').value = p.price;
+            document.getElementById('prodImageUrl').value = p.image.startsWith('data:') ? '' : p.image;
+            document.getElementById('prodFileInput').value = '';
+            productFormTitle.textContent = 'تعديل المنتج: ' + p.title;
+            saveProductBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات';
+            cancelEditBtn.style.display = 'inline-flex';
+        }
+
+        function deleteProduct(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا المنتج نهائياً من المتجر؟')) return;
+            products = products.filter(p => p.id !== id);
+            syncSharedData('fifa_products', products);
+            renderProducts();
+            renderAdminProductsList();
+            if (editingProductId === id) resetProductForm();
+        }
+
+        cancelEditBtn.addEventListener('click', resetProductForm);
+
+        // Save (Add or Edit) Product — with local file upload support
+        saveProductBtn.addEventListener('click', () => {
+            const title = document.getElementById('prodTitle').value;
+            const category = document.getElementById('prodCategory').value;
+            const price = parseFloat(document.getElementById('prodPrice').value);
+            const fileInput = document.getElementById('prodFileInput');
+            const imageUrlInput = document.getElementById('prodImageUrl').value;
+
+            if(!title || !price || (price < 300 || price > 320)) {
+                alert('يرجى ملء اسم المنتج وكتابة السعر بين 300 و 320 جنيه!');
+                return;
+            }
+
+            const commit = (imgSrc) => {
+                if (editingProductId) {
+                    const idx = products.findIndex(p => p.id === editingProductId);
+                    if (idx > -1) {
+                        products[idx] = { ...products[idx], title, category, price, image: imgSrc || products[idx].image };
+                    }
+                    alert('تم حفظ التعديلات على المنتج بنجاح!');
+                } else {
+                    products.unshift({
+                        id: Date.now(),
+                        title: title,
+                        category: category,
+                        price: price,
+                        badge: "جديد",
+                        rating: 5,
+                        image: imgSrc,
+                        description: "قميص رياضي مميز خفيف الوزن ومتوفر بجميع المقاسات."
+                    });
+                    alert('تم إضافة المنتج الجديد بنجاح إلى المتجر!');
+                }
+                syncSharedData('fifa_products', products);
+                renderProducts();
+                renderAdminProductsList();
+                resetProductForm();
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) { commit(e.target.result); };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else if (imageUrlInput) {
+                commit(imageUrlInput);
+            } else if (editingProductId) {
+                commit(null); // keep existing image when editing without a new one
+            } else {
+                alert('يرجى اختيار صورة من جهازك أو وضع رابط صورة!');
+            }
+        });
+
+        /* --- General site settings (contact info, social links, banner, footer, features) --- */
+        function populateSettingsForm() {
+            document.getElementById('settingsWhatsapp').value = settings.whatsappNumber;
+            document.getElementById('settingsPhone').value = settings.phoneNumber;
+            document.getElementById('settingsFacebook').value = settings.facebookUrl;
+            document.getElementById('settingsInstagram').value = settings.instagramUrl;
+            document.getElementById('settingsTiktok').value = settings.tiktokUrl;
+            document.getElementById('settingsBannerTitle').value = settings.bannerTitle;
+            document.getElementById('settingsBannerDesc').value = settings.bannerDesc;
+            document.getElementById('settingsFooterAbout').value = settings.footerAbout;
+            document.getElementById('settingsF1Title').value = settings.f1Title;
+            document.getElementById('settingsF1Desc').value = settings.f1Desc;
+            document.getElementById('settingsF2Title').value = settings.f2Title;
+            document.getElementById('settingsF2Desc').value = settings.f2Desc;
+            document.getElementById('settingsF3Title').value = settings.f3Title;
+            document.getElementById('settingsF3Desc').value = settings.f3Desc;
+            document.getElementById('settingsF4Title').value = settings.f4Title;
+            document.getElementById('settingsF4Desc').value = settings.f4Desc;
+        }
+
+        function applySettings() {
+            document.getElementById('heroWhatsappBtn').href = `https://wa.me/${settings.whatsappNumber}`;
+            document.getElementById('bannerWhatsappBtn').href = `https://wa.me/${settings.whatsappNumber}`;
+            document.getElementById('bannerWhatsappText').textContent = `اطلب عبر ${settings.phoneNumber}`;
+            document.getElementById('bannerTitleText').textContent = settings.bannerTitle;
+            document.getElementById('bannerDescText').textContent = settings.bannerDesc;
+            document.getElementById('footerAboutText').textContent = settings.footerAbout;
+            document.getElementById('footerPhoneText').textContent = settings.phoneNumber;
+            document.getElementById('footerWhatsappText').textContent = settings.phoneNumber;
+            document.getElementById('footerWhatsappLink').href = `https://wa.me/${settings.whatsappNumber}`;
+            document.getElementById('footerFacebookLink').href = settings.facebookUrl;
+            document.getElementById('footerInstagramLink').href = settings.instagramUrl;
+            document.getElementById('footerTiktokLink').href = settings.tiktokUrl;
+            document.getElementById('feature1Title').textContent = settings.f1Title;
+            document.getElementById('feature1Desc').textContent = settings.f1Desc;
+            document.getElementById('feature2Title').textContent = settings.f2Title;
+            document.getElementById('feature2Desc').textContent = settings.f2Desc;
+            document.getElementById('feature3Title').textContent = settings.f3Title;
+            document.getElementById('feature3Desc').textContent = settings.f3Desc;
+            document.getElementById('feature4Title').textContent = settings.f4Title;
+            document.getElementById('feature4Desc').textContent = settings.f4Desc;
+        }
+
+        saveSettingsBtn.addEventListener('click', () => {
+            settings = {
+                whatsappNumber: document.getElementById('settingsWhatsapp').value.trim() || defaultSettings.whatsappNumber,
+                phoneNumber: document.getElementById('settingsPhone').value.trim() || defaultSettings.phoneNumber,
+                facebookUrl: document.getElementById('settingsFacebook').value.trim() || defaultSettings.facebookUrl,
+                instagramUrl: document.getElementById('settingsInstagram').value.trim() || defaultSettings.instagramUrl,
+                tiktokUrl: document.getElementById('settingsTiktok').value.trim() || defaultSettings.tiktokUrl,
+                bannerTitle: document.getElementById('settingsBannerTitle').value,
+                bannerDesc: document.getElementById('settingsBannerDesc').value,
+                footerAbout: document.getElementById('settingsFooterAbout').value,
+                f1Title: document.getElementById('settingsF1Title').value,
+                f1Desc: document.getElementById('settingsF1Desc').value,
+                f2Title: document.getElementById('settingsF2Title').value,
+                f2Desc: document.getElementById('settingsF2Desc').value,
+                f3Title: document.getElementById('settingsF3Title').value,
+                f3Desc: document.getElementById('settingsF3Desc').value,
+                f4Title: document.getElementById('settingsF4Title').value,
+                f4Desc: document.getElementById('settingsF4Desc').value
+            };
+            syncSharedData('fifa_settings', settings);
+            applySettings();
+            alert('تم حفظ كل إعدادات الموقع بنجاح!');
+        });
+
+        /* --- Shipping prices per governorate --- */
+        const EGYPT_GOVERNORATES = [
+            'القاهرة', 'الجيزة', 'الإسكندرية', 'الدقهلية', 'البحر الأحمر', 'البحيرة',
+            'الفيوم', 'الغربية', 'الإسماعيلية', 'المنوفية', 'المنيا', 'القليوبية',
+            'الوادي الجديد', 'السويس', 'أسوان', 'أسيوط', 'بني سويف', 'بورسعيد',
+            'دمياط', 'الشرقية', 'جنوب سيناء', 'كفر الشيخ', 'مطروح', 'الأقصر',
+            'قنا', 'شمال سيناء', 'سوهاج'
+        ];
+        const defaultShippingPrices = Object.fromEntries(EGYPT_GOVERNORATES.map(g => [g, 50]));
+        let shippingPrices = { ...defaultShippingPrices, ...(JSON.parse(localStorage.getItem('fifa_shipping')) || {}) };
+        let selectedGovernorate = '';
+
+        function renderCartGovernorateOptions() {
+            const current = cartGovernorate.value;
+            cartGovernorate.innerHTML = '<option value="" disabled ' + (selectedGovernorate ? '' : 'selected') + '>اختر محافظتك</option>' +
+                EGYPT_GOVERNORATES.map(g => `<option value="${g}" ${selectedGovernorate === g ? 'selected' : ''}>${g} - ${shippingPrices[g]} ج.م</option>`).join('');
+        }
+
+        cartGovernorate.addEventListener('change', () => {
+            selectedGovernorate = cartGovernorate.value;
+            updateCartUI();
+        });
+
+        function renderShippingAdminInputs() {
+            shippingInputsContainer.innerHTML = EGYPT_GOVERNORATES.map(g => `
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label>${g}</label>
+                    <input type="number" class="form-control shipping-price-input" data-gov="${g}" value="${shippingPrices[g]}" min="0">
+                </div>
+            `).join('');
+        }
+
+        saveShippingBtn.addEventListener('click', () => {
+            const inputs = shippingInputsContainer.querySelectorAll('.shipping-price-input');
+            const updated = { ...shippingPrices };
+            inputs.forEach(inp => {
+                const val = parseFloat(inp.value);
+                updated[inp.dataset.gov] = isNaN(val) || val < 0 ? shippingPrices[inp.dataset.gov] : val;
+            });
+            shippingPrices = updated;
+            syncSharedData('fifa_shipping', shippingPrices);
+            renderCartGovernorateOptions();
+            updateCartUI();
+            alert('تم حفظ أسعار الشحن لكل المحافظات بنجاح!');
+        });
+
+        /* 8. INITIALIZATION */
+        cartBtn.addEventListener('click', openCart);
+        closeCartBtn.addEventListener('click', closeCart);
+        closeQVBtn.addEventListener('click', closeQV);
+        overlay.addEventListener('click', () => {
+            closeCart();
+            closeQV();
+            adminModal.classList.remove('active');
+            registerModal.classList.remove('active');
+        });
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderProducts(btn.dataset.filter);
+            });
+        });
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu automatically when a nav link is tapped
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Back-to-top button: show after scrolling, scroll smoothly on click
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Initialize App
+        applySettings();
+        updateAdminUI();
+        updateUserUI();
+        renderProducts();
+        renderCartGovernorateOptions();
+        updateCartUI();
+        showAdminTab('products');
+    </script>
+</body>
+</html>
