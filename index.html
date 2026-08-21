@@ -6,7 +6,7 @@
     <title>FIFA STORE | أفضل متجر تيشرتات في مصر</title>
     <meta name="description" content="FIFA STORE - أكبر تشكيلة من تيشرتات وقمصان الأندية العالمية والمنتخبات والكلاسيكيات (Retro) في مصر، بأفضل الأسعار وأعلى جودة، مع توصيل لكل المحافظات وطلب سريع عبر الواتساب.">
     <!-- Favicon (inline SVG jersey icon - no external file needed) -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%230d0d0d'/%3E%3Cpath d='M8 2 4 6l2 3v11h12V9l2-3-4-4-4 3-4-3Z' fill='%23ffffff'/%3E%3C/svg%3E">
+    <link rel="icon" id="siteFaviconLink" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%230d0d0d'/%3E%3Cpath d='M8 2 4 6l2 3v11h12V9l2-3-4-4-4 3-4-3Z' fill='%23ffffff'/%3E%3C/svg%3E">
     <!-- Google Fonts & FontAwesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -1283,6 +1283,20 @@
                 <button class="btn btn-primary" id="saveLogoImageBtn"><i class="fa-solid fa-image"></i> حفظ شعار المتجر</button>
                 <button class="btn btn-outline" id="resetLogoImageBtn"><i class="fa-solid fa-rotate-left"></i> رجوع للشعار الافتراضي</button>
             </div>
+
+            <h3 style="margin: 25px 0 10px; font-size:1rem;">أيقونة الموقع (تظهر في تبويب المتصفح من برة)</h3>
+            <div class="form-group">
+                <label>اختر صورة الأيقونة من جهازك (ملف)</label>
+                <input type="file" id="faviconFileInput" class="form-control" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label>أو ضع رابط صورة الأيقونة مباشر (URL)</label>
+                <input type="text" id="faviconUrlInput" class="form-control" placeholder="https://...">
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-primary" id="saveFaviconBtn"><i class="fa-solid fa-icons"></i> حفظ أيقونة الموقع</button>
+                <button class="btn btn-outline" id="resetFaviconBtn"><i class="fa-solid fa-rotate-left"></i> رجوع للأيقونة الافتراضية</button>
+            </div>
         </div>
 
         <!-- Section 3: General Site Settings -->
@@ -1414,7 +1428,7 @@
                 <div class="footer-col">
                     <h4>تواصل معنا مباشرة</h4>
                     <ul style="color: var(--text-muted); font-size: 0.9rem;">
-                        <li style="margin-bottom: 10px;"><i class="fa-solid fa-location-dot"></i> القاهرة / جميع محافظات مصر</li>
+                        <li style="margin-bottom: 10px;"><i class="fa-solid fa-location-dot"></i> مصر</li>
                         <li style="margin-bottom: 10px;"><i class="fa-solid fa-phone"></i> <span id="footerPhoneText">01557550837</span></li>
                         <li style="margin-bottom: 10px;"><i class="fa-brands fa-whatsapp"></i> <span id="footerWhatsappText">01557550837</span></li>
                     </ul>
@@ -1481,7 +1495,15 @@
         /* Helper: persist a piece of shared store data to localStorage AND,
            when configured, push it to Firebase so every visitor gets it live. */
         function syncSharedData(key, value) {
-            localStorage.setItem(key, JSON.stringify(value));
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+            } catch (err) {
+                // localStorage has a small storage limit (a few MB). With a large catalog
+                // (hundreds/thousands of products, especially with uploaded images) it can
+                // fill up. Firebase sync below still goes through regardless, so the data
+                // isn't lost — this just stops it from being duplicated on this device too.
+                console.warn('localStorage is full, skipping local copy for', key, err);
+            }
             if (isFirebaseConfigured) {
                 firebaseDB.ref(key).set(value).catch(err => console.warn('Firebase sync failed for', key, err));
             }
@@ -1729,7 +1751,7 @@
 
         /* All possible t-shirt sizes. Admin picks which of these are
            available per product when adding/editing it. */
-        const ALL_SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
+        const ALL_SIZES = ['S', 'M', 'L', 'XL', 'XXL', '3XL'];
         function productSizes(product) {
             // Older products saved before this feature (or a product saved
             // with no sizes chosen) simply show every size.
@@ -1745,9 +1767,11 @@
         let currentUser = JSON.parse(localStorage.getItem('fifa_current_user')) || null;
 
         /* SITE SETTINGS (editable content: contact info, social links, banner, footer, features) */
-        const ADMIN_EMAIL = 'nourhasanin10@gmail.com';
+        const ADMIN_EMAILS = ['nourhasanin10@gmail.com', 'alya1012009@gmail.com'];
+        const DEFAULT_FAVICON = document.getElementById('siteFaviconLink').getAttribute('href');
         const defaultSettings = {
             logoImage: '',
+            faviconImage: '',
             whatsappNumber: '201557550837',
             phoneNumber: '01557550837',
             facebookUrl: 'https://www.facebook.com/share/1BfiRc7gJk/',
@@ -1816,6 +1840,10 @@
         const logoImageUrlInput = document.getElementById('logoImageUrlInput');
         const saveLogoImageBtn = document.getElementById('saveLogoImageBtn');
         const resetLogoImageBtn = document.getElementById('resetLogoImageBtn');
+        const faviconFileInput = document.getElementById('faviconFileInput');
+        const faviconUrlInput = document.getElementById('faviconUrlInput');
+        const saveFaviconBtn = document.getElementById('saveFaviconBtn');
+        const resetFaviconBtn = document.getElementById('resetFaviconBtn');
         const saveProductBtn = document.getElementById('saveProductBtn');
         const cancelEditBtn = document.getElementById('cancelEditBtn');
         const productFormTitle = document.getElementById('productFormTitle');
@@ -2151,7 +2179,7 @@
             }
             const email = prompt('لتسجيل الدخول كأدمن، اكتب البريد الإلكتروني المصرح له:');
             if (email === null) return;
-            if (email.trim().toLowerCase() === ADMIN_EMAIL) {
+            if (ADMIN_EMAILS.includes(email.trim().toLowerCase())) {
                 localStorage.setItem('fifa_admin', 'true');
                 updateAdminUI();
                 alert('تم تسجيل الدخول كأدمن بنجاح! يمكنك الآن التعديل على كل محتوى الموقع من زر لوحة التحكم بجانب السلة.');
@@ -2217,8 +2245,8 @@
             localStorage.setItem('fifa_current_user', JSON.stringify(currentUser));
             trackRegistration();
 
-            // Auto-grant admin access if this is the store owner's email
-            if (email === ADMIN_EMAIL) {
+            // Auto-grant admin access if this is one of the store owners' emails
+            if (ADMIN_EMAILS.includes(email)) {
                 localStorage.setItem('fifa_admin', 'true');
                 updateAdminUI();
                 alert('أهلاً ' + name + '! تم التعرف على بريدك كصاحب الموقع وتفعيل صلاحيات الأدمن. زرار لوحة التحكم ظهر بجانب السلة.');
@@ -2420,6 +2448,37 @@
             alert('تم الرجوع للشعار الافتراضي!');
         });
 
+        // Save the site favicon (the icon shown in the browser tab) — from a device file or a URL
+        saveFaviconBtn.addEventListener('click', () => {
+            const applyFavicon = (src) => {
+                settings = { ...settings, faviconImage: src };
+                syncSharedData('fifa_settings', settings);
+                applySettings();
+                faviconUrlInput.value = '';
+                faviconFileInput.value = '';
+                alert('تم تحديث أيقونة الموقع بنجاح!');
+            };
+            if (faviconFileInput.files && faviconFileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => applyFavicon(e.target.result);
+                reader.readAsDataURL(faviconFileInput.files[0]);
+            } else if (faviconUrlInput.value.trim()) {
+                applyFavicon(faviconUrlInput.value.trim());
+            } else {
+                alert('يرجى اختيار صورة من جهازك أو وضع رابط صورة!');
+            }
+        });
+
+        // Reset favicon back to the default jersey icon
+        resetFaviconBtn.addEventListener('click', () => {
+            settings = { ...settings, faviconImage: '' };
+            syncSharedData('fifa_settings', settings);
+            applySettings();
+            faviconUrlInput.value = '';
+            faviconFileInput.value = '';
+            alert('تم الرجوع للأيقونة الافتراضية!');
+        });
+
         /* --- Products: list, add, edit, delete --- */
         function renderAdminProductsList() {
             adminProductCount.textContent = products.length;
@@ -2585,6 +2644,8 @@
         }
 
         function applySettings() {
+            const hasFavicon = !!(settings.faviconImage && settings.faviconImage.trim());
+            document.getElementById('siteFaviconLink').setAttribute('href', hasFavicon ? settings.faviconImage : DEFAULT_FAVICON);
             const hasLogoImage = !!(settings.logoImage && settings.logoImage.trim());
             ['Header', 'Footer'].forEach(pos => {
                 const img = document.getElementById('logoImage' + pos);
