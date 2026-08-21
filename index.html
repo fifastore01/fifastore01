@@ -992,11 +992,12 @@
     <header>
         <div class="container navbar">
             <a href="#" class="logo">
-                <svg class="logo-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <img class="logo-icon" id="logoImageHeader" src="" alt="FIFA STORE" style="display:none; object-fit:contain; border-radius:4px;">
+                <svg class="logo-icon" id="logoIconHeader" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M8 2 4 6l2 3v11h12V9l2-3-4-4-4 3-4-3Z" fill="#ffffff"/>
                     <path d="M8 2 4 6l2 3v11h12V9l2-3-4-4-4 3-4-3Z" stroke="#0d0d0d" stroke-width="0.6" fill="none"/>
                 </svg>
-                FIFA <span>STORE</span>
+                <span>STORE</span> FIFA
             </a>
 
             <ul class="nav-links" id="navLinks">
@@ -1086,13 +1087,8 @@
                 <h2>تشكيلة قمصان فيفا ستور</h2>
             </div>
 
-            <!-- Filter Buttons -->
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">الكل</button>
-                <button class="filter-btn" data-filter="clubs">الأندية الأوروبية</button>
-                <button class="filter-btn" data-filter="national">المنتخبات</button>
-                <button class="filter-btn" data-filter="retro">الكلاسيكيات (Retro)</button>
-            </div>
+            <!-- Filter Buttons (rendered dynamically from the admin-managed category list) -->
+            <div class="filter-buttons" id="filterButtonsContainer"></div>
 
             <!-- Products Grid -->
             <div class="products-grid" id="productsGrid"></div>
@@ -1194,6 +1190,14 @@
             <h3 style="margin-bottom:12px; font-size:1rem;">المنتجات الحالية (<span id="adminProductCount">0</span>)</h3>
             <div id="adminProductsList" style="max-height:220px; overflow-y:auto; margin-bottom:25px; border:1px solid var(--border-color); border-radius:8px;"></div>
 
+            <h3 style="margin-bottom:12px; font-size:1rem;">تصنيفات المنتجات</h3>
+            <div id="adminCategoriesList" style="margin-bottom:12px; border:1px solid var(--border-color); border-radius:8px;"></div>
+            <div class="form-group">
+                <label>اسم تصنيف جديد</label>
+                <input type="text" id="newCategoryName" class="form-control" placeholder="مثال: قمصان حراس المرمى">
+            </div>
+            <button class="btn btn-outline" id="addCategoryBtn" style="margin-bottom:25px;"><i class="fa-solid fa-plus"></i> إضافة تصنيف جديد</button>
+
             <h3 id="productFormTitle" style="margin-bottom:12px; font-size:1rem;">إضافة منتج جديد</h3>
             <div class="form-group">
                 <label>اسم القميص / المنتج</label>
@@ -1201,11 +1205,7 @@
             </div>
             <div class="form-group">
                 <label>الفئة</label>
-                <select id="prodCategory" class="form-control">
-                    <option value="clubs">الأندية الأوروبية</option>
-                    <option value="national">المنتخبات</option>
-                    <option value="retro">الكلاسيكيات (Retro)</option>
-                </select>
+                <select id="prodCategory" class="form-control"></select>
             </div>
             <div class="form-group">
                 <label>السعر (ج.م)</label>
@@ -1218,8 +1218,8 @@
             </div>
             
             <div class="form-group">
-                <label>الصورة الرئيسية للمنتج — من جهازك (ملف)</label>
-                <input type="file" id="prodFileInput" class="form-control" accept="image/*">
+                <label>صور المنتج — من جهازك (تقدر تحدد أكتر من صورة مرة واحدة من المعرض)</label>
+                <input type="file" id="prodFileInput" class="form-control" accept="image/*" multiple>
             </div>
 
             <div class="form-group">
@@ -1230,6 +1230,11 @@
             <div class="form-group">
                 <label>صور إضافية للمنتج (اختياري) — رابط صورة في كل سطر</label>
                 <textarea id="prodExtraImages" class="form-control" rows="3" placeholder="اختياري: ضيف رابط صورة إضافية في كل سطر لو عايز أكتر من صورة للمنتج"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>الشارة الظاهرة فوق التيشرت (مثال: الأكثر مبيعاً / جديد)</label>
+                <input type="text" id="prodBadge" class="form-control" placeholder="مثال: الأكثر مبيعاً">
             </div>
 
             <div style="display:flex; gap:10px;">
@@ -1264,6 +1269,20 @@
                 <input type="text" id="heroImageUrlInput" class="form-control" placeholder="https://...">
             </div>
             <button class="btn btn-primary" id="saveHeroImageBtn"><i class="fa-solid fa-image"></i> حفظ صورة الموقع</button>
+
+            <h3 style="margin: 25px 0 10px; font-size:1rem;">شعار المتجر (بجانب اسم FIFA STORE)</h3>
+            <div class="form-group">
+                <label>اختر صورة الشعار من جهازك (ملف)</label>
+                <input type="file" id="logoImageFileInput" class="form-control" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label>أو ضع رابط صورة الشعار مباشر (URL)</label>
+                <input type="text" id="logoImageUrlInput" class="form-control" placeholder="https://...">
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-primary" id="saveLogoImageBtn"><i class="fa-solid fa-image"></i> حفظ شعار المتجر</button>
+                <button class="btn btn-outline" id="resetLogoImageBtn"><i class="fa-solid fa-rotate-left"></i> رجوع للشعار الافتراضي</button>
+            </div>
         </div>
 
         <!-- Section 3: General Site Settings -->
@@ -1355,11 +1374,12 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <a href="#" class="logo" style="margin-bottom: 15px;">
-                        <svg class="logo-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <img class="logo-icon" id="logoImageFooter" src="" alt="FIFA STORE" style="display:none; object-fit:contain; border-radius:4px;">
+                        <svg class="logo-icon" id="logoIconFooter" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path d="M8 2 4 6l2 3v11h12V9l2-3-4-4-4 3-4-3Z" fill="#ffffff"/>
                             <path d="M8 2 4 6l2 3v11h12V9l2-3-4-4-4 3-4-3Z" stroke="#0d0d0d" stroke-width="0.6" fill="none"/>
                         </svg>
-                        FIFA <span>STORE</span>
+                        <span>STORE</span> FIFA
                     </a>
                     <p style="color: var(--text-muted); font-size: 0.9rem;" id="footerAboutText">
                         متجر FIFA STORE هو الخيار الأول لجميع عشاق ومحبي كرة القدم في مصر للحصول على أحدث التيشرتات والقمصان الرياضية بأسعار تنافسية.
@@ -1395,8 +1415,8 @@
                     <h4>تواصل معنا مباشرة</h4>
                     <ul style="color: var(--text-muted); font-size: 0.9rem;">
                         <li style="margin-bottom: 10px;"><i class="fa-solid fa-location-dot"></i> القاهرة / جميع محافظات مصر</li>
-                        <li style="margin-bottom: 10px;"><i class="fa-solid fa-phone"></i> <span id="footerPhoneText">01080536635</span></li>
-                        <li style="margin-bottom: 10px;"><i class="fa-brands fa-whatsapp"></i> <span id="footerWhatsappText">01080536635</span></li>
+                        <li style="margin-bottom: 10px;"><i class="fa-solid fa-phone"></i> <span id="footerPhoneText">01557550837</span></li>
+                        <li style="margin-bottom: 10px;"><i class="fa-brands fa-whatsapp"></i> <span id="footerWhatsappText">01557550837</span></li>
                     </ul>
                 </div>
             </div>
@@ -1698,6 +1718,15 @@
             }
         ];
 
+        /* Product categories (shown as filter buttons + the dropdown in the
+           admin product form). Admin can add new ones or delete existing ones
+           (like "المنتخبات") from the Admin panel. */
+        const defaultCategories = [
+            { key: 'clubs', name: 'الأندية الأوروبية' },
+            { key: 'national', name: 'المنتخبات' },
+            { key: 'retro', name: 'الكلاسيكيات (Retro)' }
+        ];
+
         /* All possible t-shirt sizes. Admin picks which of these are
            available per product when adding/editing it. */
         const ALL_SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
@@ -1709,6 +1738,7 @@
 
         /* LOCALSTORAGE STATE MANAGEMENT */
         let products = JSON.parse(localStorage.getItem('fifa_products')) || initialProducts;
+        let categories = JSON.parse(localStorage.getItem('fifa_categories')) || defaultCategories;
         let cart = JSON.parse(localStorage.getItem('fifa_cart')) || [];
         let selectedSize = "M";
         let editingProductId = null;
@@ -1717,8 +1747,9 @@
         /* SITE SETTINGS (editable content: contact info, social links, banner, footer, features) */
         const ADMIN_EMAIL = 'nourhasanin10@gmail.com';
         const defaultSettings = {
+            logoImage: '',
             whatsappNumber: '201557550837',
-            phoneNumber: '01080536635',
+            phoneNumber: '01557550837',
             facebookUrl: 'https://www.facebook.com/share/1BfiRc7gJk/',
             instagramUrl: 'https://www.instagram.com/fif_astore01?igsh=Y29yeDd5OGpkdXly&igsi=Y29yeDd5OGpkdXly',
             tiktokUrl: 'https://www.tiktok.com/@fifastore01?is_from_webapp=1&sender_device=pc',
@@ -1745,10 +1776,14 @@
         const cartTotalPrice = document.getElementById('cartTotalPrice');
         const prodSizesBox = document.getElementById('prodSizesBox');
         const prodExtraImages = document.getElementById('prodExtraImages');
+        const prodBadge = document.getElementById('prodBadge');
         const quickViewModal = document.getElementById('quickViewModal');
         const closeQVBtn = document.getElementById('closeQVBtn');
         const qvContent = document.getElementById('qvContent');
-        const filterBtns = document.querySelectorAll('.filter-btn');
+        const filterButtonsContainer = document.getElementById('filterButtonsContainer');
+        const adminCategoriesList = document.getElementById('adminCategoriesList');
+        const newCategoryName = document.getElementById('newCategoryName');
+        const addCategoryBtn = document.getElementById('addCategoryBtn');
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
         const backToTopBtn = document.getElementById('backToTopBtn');
@@ -1777,6 +1812,10 @@
         const heroImageFileInput = document.getElementById('heroImageFileInput');
         const heroImageUrlInput = document.getElementById('heroImageUrlInput');
         const saveHeroImageBtn = document.getElementById('saveHeroImageBtn');
+        const logoImageFileInput = document.getElementById('logoImageFileInput');
+        const logoImageUrlInput = document.getElementById('logoImageUrlInput');
+        const saveLogoImageBtn = document.getElementById('saveLogoImageBtn');
+        const resetLogoImageBtn = document.getElementById('resetLogoImageBtn');
         const saveProductBtn = document.getElementById('saveProductBtn');
         const cancelEditBtn = document.getElementById('cancelEditBtn');
         const productFormTitle = document.getElementById('productFormTitle');
@@ -1841,13 +1880,73 @@
         }
 
         function getCategoryName(cat) {
-            switch(cat) {
-                case 'clubs': return 'الأندية الأوروبية';
-                case 'national': return 'المنتخبات الوطنية';
-                case 'retro': return 'الكلاسيكيات Retro';
-                default: return 'عام';
-            }
+            const found = categories.find(c => c.key === cat);
+            return found ? found.name : 'عام';
         }
+
+        /* --- Categories: render filter buttons + admin category dropdown/list --- */
+        function renderFilterButtons() {
+            filterButtonsContainer.innerHTML = '<button class="filter-btn active" data-filter="all">الكل</button>' +
+                categories.map(c => `<button class="filter-btn" data-filter="${c.key}">${c.name}</button>`).join('');
+            attachFilterListeners();
+        }
+
+        function attachFilterListeners() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderProducts(btn.dataset.filter);
+                });
+            });
+        }
+
+        function renderProdCategoryOptions() {
+            const prodCategorySelect = document.getElementById('prodCategory');
+            const current = prodCategorySelect.value;
+            prodCategorySelect.innerHTML = categories.map(c => `<option value="${c.key}">${c.name}</option>`).join('');
+            if (categories.some(c => c.key === current)) prodCategorySelect.value = current;
+        }
+
+        function renderAdminCategoriesList() {
+            adminCategoriesList.innerHTML = categories.map(c => `
+                <div style="display:flex; align-items:center; gap:10px; padding:8px 10px; border-bottom:1px solid var(--border-color);">
+                    <div style="flex-grow:1; font-size:0.85rem; font-weight:600;">${c.name}</div>
+                    <button class="action-btn" style="width:28px;height:28px;font-size:0.75rem; background-color:#ff4d4d;" onclick="deleteCategory('${c.key}')" title="حذف التصنيف"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('') || '<p style="padding:12px; color:var(--text-muted); font-size:0.85rem;">لا توجد تصنيفات بعد.</p>';
+        }
+
+        function deleteCategory(key) {
+            if (categories.length <= 1) {
+                alert('لازم يفضل تصنيف واحد على الأقل!');
+                return;
+            }
+            if (!confirm('هل أنت متأكد من حذف هذا التصنيف؟ المنتجات المرتبطة به هتفضل موجودة بس تحت تصنيف "عام".')) return;
+            categories = categories.filter(c => c.key !== key);
+            syncSharedData('fifa_categories', categories);
+            renderFilterButtons();
+            renderProdCategoryOptions();
+            renderAdminCategoriesList();
+            renderProducts();
+            renderAdminProductsList();
+        }
+
+        addCategoryBtn.addEventListener('click', () => {
+            const name = newCategoryName.value.trim();
+            if (!name) {
+                alert('يرجى كتابة اسم التصنيف الجديد!');
+                return;
+            }
+            const key = 'cat_' + Date.now();
+            categories.push({ key, name });
+            syncSharedData('fifa_categories', categories);
+            renderFilterButtons();
+            renderProdCategoryOptions();
+            renderAdminCategoriesList();
+            newCategoryName.value = '';
+            alert('تم إضافة التصنيف بنجاح!');
+        });
 
         /* 3. CART SYSTEM */
         function addToCart(id, size = null) {
@@ -2156,6 +2255,13 @@
                 settings = { ...defaultSettings, ...(JSON.parse(e.newValue) || {}) };
                 applySettings();
                 populateSettingsForm();
+            } else if (e.key === 'fifa_categories') {
+                categories = JSON.parse(e.newValue) || defaultCategories;
+                renderFilterButtons();
+                renderProdCategoryOptions();
+                renderAdminCategoriesList();
+                renderProducts();
+                renderAdminProductsList();
             } else if (e.key === 'fifa_shipping') {
                 shippingPrices = { ...defaultShippingPrices, ...(JSON.parse(e.newValue) || {}) };
                 renderCartGovernorateOptions();
@@ -2191,6 +2297,18 @@
                     localStorage.setItem('fifa_settings', JSON.stringify(settings));
                     applySettings();
                     populateSettingsForm();
+                }
+            });
+            firebaseDB.ref('fifa_categories').on('value', (snapshot) => {
+                const val = snapshot.val();
+                if (val) {
+                    categories = val;
+                    localStorage.setItem('fifa_categories', JSON.stringify(categories));
+                    renderFilterButtons();
+                    renderProdCategoryOptions();
+                    renderAdminCategoriesList();
+                    renderProducts();
+                    renderAdminProductsList();
                 }
             });
             firebaseDB.ref('fifa_shipping').on('value', (snapshot) => {
@@ -2271,6 +2389,37 @@
             }
         });
 
+        // Save the store logo (shown next to "FIFA STORE" in header & footer) — from a device file or a URL
+        saveLogoImageBtn.addEventListener('click', () => {
+            const applyLogo = (src) => {
+                settings = { ...settings, logoImage: src };
+                syncSharedData('fifa_settings', settings);
+                applySettings();
+                logoImageUrlInput.value = '';
+                logoImageFileInput.value = '';
+                alert('تم تحديث شعار المتجر بنجاح!');
+            };
+            if (logoImageFileInput.files && logoImageFileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => applyLogo(e.target.result);
+                reader.readAsDataURL(logoImageFileInput.files[0]);
+            } else if (logoImageUrlInput.value.trim()) {
+                applyLogo(logoImageUrlInput.value.trim());
+            } else {
+                alert('يرجى اختيار صورة من جهازك أو وضع رابط صورة!');
+            }
+        });
+
+        // Reset logo back to the default jersey icon
+        resetLogoImageBtn.addEventListener('click', () => {
+            settings = { ...settings, logoImage: '' };
+            syncSharedData('fifa_settings', settings);
+            applySettings();
+            logoImageUrlInput.value = '';
+            logoImageFileInput.value = '';
+            alert('تم الرجوع للشعار الافتراضي!');
+        });
+
         /* --- Products: list, add, edit, delete --- */
         function renderAdminProductsList() {
             adminProductCount.textContent = products.length;
@@ -2305,11 +2454,13 @@
         function resetProductForm() {
             editingProductId = null;
             document.getElementById('prodTitle').value = '';
-            document.getElementById('prodCategory').value = 'clubs';
+            renderProdCategoryOptions();
+            if (categories.length) document.getElementById('prodCategory').value = categories[0].key;
             document.getElementById('prodPrice').value = '310';
             document.getElementById('prodImageUrl').value = '';
             document.getElementById('prodFileInput').value = '';
             prodExtraImages.value = '';
+            prodBadge.value = 'جديد';
             renderProdSizesBox(ALL_SIZES);
             productFormTitle.textContent = 'إضافة منتج جديد';
             saveProductBtn.innerHTML = '<i class="fa-solid fa-plus"></i> إضافة المنتج للمتجر';
@@ -2326,6 +2477,7 @@
             document.getElementById('prodImageUrl').value = p.image.startsWith('data:') ? '' : p.image;
             document.getElementById('prodFileInput').value = '';
             prodExtraImages.value = (p.images || []).join('\n');
+            prodBadge.value = p.badge || '';
             renderProdSizesBox(productSizes(p));
             productFormTitle.textContent = 'تعديل المنتج: ' + p.title;
             saveProductBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات';
@@ -2343,7 +2495,18 @@
 
         cancelEditBtn.addEventListener('click', resetProductForm);
 
+        // Read a single File object as a base64 data URL, wrapped in a Promise
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
         // Save (Add or Edit) Product — with local file upload support
+        // (the device file field accepts selecting several photos from the gallery at once)
         saveProductBtn.addEventListener('click', () => {
             const title = document.getElementById('prodTitle').value;
             const category = document.getElementById('prodCategory').value;
@@ -2351,18 +2514,20 @@
             const fileInput = document.getElementById('prodFileInput');
             const imageUrlInput = document.getElementById('prodImageUrl').value;
             const sizes = getSelectedSizesFromForm();
-            const images = prodExtraImages.value.split('\n').map(s => s.trim()).filter(Boolean);
+            const urlImages = prodExtraImages.value.split('\n').map(s => s.trim()).filter(Boolean);
+            const badge = prodBadge.value.trim() || 'جديد';
 
             if(!title || !price || price <= 0) {
                 alert('يرجى ملء اسم المنتج وكتابة سعر صحيح أكبر من صفر!');
                 return;
             }
 
-            const commit = (imgSrc) => {
+            const commit = (imgSrc, extraImages) => {
+                const images = [...extraImages, ...urlImages];
                 if (editingProductId) {
                     const idx = products.findIndex(p => p.id === editingProductId);
                     if (idx > -1) {
-                        products[idx] = { ...products[idx], title, category, price, sizes, images, image: imgSrc || products[idx].image };
+                        products[idx] = { ...products[idx], title, category, price, sizes, badge, images, image: imgSrc || products[idx].image };
                     }
                     alert('تم حفظ التعديلات على المنتج بنجاح!');
                 } else {
@@ -2371,7 +2536,7 @@
                         title: title,
                         category: category,
                         price: price,
-                        badge: "جديد",
+                        badge: badge,
                         rating: 5,
                         sizes: sizes,
                         images: images,
@@ -2386,16 +2551,16 @@
                 resetProductForm();
             };
 
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) { commit(e.target.result); };
-                reader.readAsDataURL(fileInput.files[0]);
+            if (fileInput.files && fileInput.files.length > 0) {
+                Promise.all(Array.from(fileInput.files).map(readFileAsDataURL)).then(dataUrls => {
+                    commit(dataUrls[0], dataUrls.slice(1));
+                });
             } else if (imageUrlInput) {
-                commit(imageUrlInput);
+                commit(imageUrlInput, []);
             } else if (editingProductId) {
-                commit(null); // keep existing image when editing without a new one
+                commit(null, []); // keep existing image when editing without a new one
             } else {
-                alert('يرجى اختيار صورة من جهازك أو وضع رابط صورة!');
+                alert('يرجى اختيار صورة أو أكثر من جهازك أو وضع رابط صورة!');
             }
         });
 
@@ -2420,6 +2585,19 @@
         }
 
         function applySettings() {
+            const hasLogoImage = !!(settings.logoImage && settings.logoImage.trim());
+            ['Header', 'Footer'].forEach(pos => {
+                const img = document.getElementById('logoImage' + pos);
+                const icon = document.getElementById('logoIcon' + pos);
+                if (hasLogoImage) {
+                    img.src = settings.logoImage;
+                    img.style.display = 'block';
+                    icon.style.display = 'none';
+                } else {
+                    img.style.display = 'none';
+                    icon.style.display = 'block';
+                }
+            });
             document.getElementById('hero').style.backgroundImage =
                 `linear-gradient(rgba(13,13,13,0.85), rgba(13,13,13,0.95)), url('${settings.heroImage}')`;
             document.getElementById('heroWhatsappBtn').href = `https://wa.me/${settings.whatsappNumber}`;
@@ -2530,14 +2708,6 @@
             registerModal.classList.remove('active');
         });
 
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                renderProducts(btn.dataset.filter);
-            });
-        });
-
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
@@ -2565,6 +2735,9 @@
         applySettings();
         updateAdminUI();
         updateUserUI();
+        renderFilterButtons();
+        renderProdCategoryOptions();
+        renderAdminCategoriesList();
         renderProdSizesBox(ALL_SIZES);
         renderProducts();
         renderCartGovernorateOptions();
