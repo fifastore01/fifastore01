@@ -978,6 +978,7 @@
          See the FIREBASE_CONFIG note in the main script for setup steps. -->
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
     <!-- EmailJS — lets the store send the daily visitors/registrations report
          by email straight from the browser, with no server needed.
          See the EMAILJS_CONFIG note in the main script for setup steps. -->
@@ -1479,17 +1480,38 @@
         };
 
         let firebaseDB = null;
+        let firebaseAuth = null;
         let isFirebaseConfigured = false;
         try {
             if (FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.databaseURL && typeof firebase !== 'undefined') {
                 firebase.initializeApp(FIREBASE_CONFIG);
                 firebaseDB = firebase.database();
+                firebaseAuth = firebase.auth();
                 isFirebaseConfigured = true;
             }
         } catch (err) {
             console.warn('Firebase not configured / failed to initialize — falling back to localStorage-only sync.', err);
             firebaseDB = null;
+            firebaseAuth = null;
             isFirebaseConfigured = false;
+        }
+
+        /* Keep the admin flag in sync with Firebase's REAL login state. This
+           runs on every page load and after every sign-in/out, so "isAdmin()"
+           always reflects an actual authenticated session — not just a
+           leftover localStorage flag from before. This is what makes the
+           ".write": "auth != null" database rule actually work: only a
+           visitor who is genuinely signed in through Firebase Authentication
+           can write, and only ADMIN_EMAILS accounts are ever signed in. */
+        if (isFirebaseConfigured) {
+            firebaseAuth.onAuthStateChanged((user) => {
+                if (user && ADMIN_EMAILS.includes((user.email || '').toLowerCase())) {
+                    localStorage.setItem('fifa_admin', 'true');
+                } else {
+                    localStorage.removeItem('fifa_admin');
+                }
+                updateAdminUI();
+            });
         }
 
         /* Helper: persist a piece of shared store data to localStorage AND,
@@ -2188,18 +2210,32 @@
                 renderAdminProductsList();
                 return;
             }
+            if (!isFirebaseConfigured) {
+                alert('تسجيل دخول الأدمن محتاج Firebase مفعّل. تأكدي إن الموقع متصل بالإنترنت.');
+                return;
+            }
             const email = prompt('لتسجيل الدخول كأدمن، اكتب البريد الإلكتروني المصرح له:');
             if (email === null) return;
-            if (ADMIN_EMAILS.includes(email.trim().toLowerCase())) {
-                localStorage.setItem('fifa_admin', 'true');
-                updateAdminUI();
-                alert('تم تسجيل الدخول كأدمن بنجاح! يمكنك الآن التعديل على كل محتوى الموقع من زر لوحة التحكم بجانب السلة.');
-            } else {
-                alert('هذا البريد غير مصرح له بالدخول للوحة التحكم.');
-            }
+            const password = prompt('اكتب كلمة المرور الخاصة بحساب الأدمن:');
+            if (password === null) return;
+            firebaseAuth.signInWithEmailAndPassword(email.trim().toLowerCase(), password)
+                .then((cred) => {
+                    if (!ADMIN_EMAILS.includes((cred.user.email || '').toLowerCase())) {
+                        firebaseAuth.signOut();
+                        alert('هذا البريد غير مصرح له بالدخول للوحة التحكم.');
+                        return;
+                    }
+                    // onAuthStateChanged sets fifa_admin + calls updateAdminUI()
+                    alert('تم تسجيل الدخول كأدمن بنجاح! يمكنك الآن التعديل على كل محتوى الموقع من زر لوحة التحكم بجانب السلة.');
+                })
+                .catch((err) => {
+                    console.warn('Admin sign-in failed', err);
+                    alert('فشل تسجيل الدخول: البريد أو كلمة المرور غير صحيحة.');
+                });
         });
 
         adminLogoutBtn.addEventListener('click', () => {
+            if (isFirebaseConfigured) firebaseAuth.signOut();
             localStorage.removeItem('fifa_admin');
             updateAdminUI();
             adminModal.classList.remove('active');
@@ -2256,14 +2292,11 @@
             localStorage.setItem('fifa_current_user', JSON.stringify(currentUser));
             trackRegistration();
 
-            // Auto-grant admin access if this is one of the store owners' emails
-            if (ADMIN_EMAILS.includes(email)) {
-                localStorage.setItem('fifa_admin', 'true');
-                updateAdminUI();
-                alert('أهلاً ' + name + '! تم التعرف على بريدك كصاحب الموقع وتفعيل صلاحيات الأدمن. زرار لوحة التحكم ظهر بجانب السلة.');
-            } else {
-                alert('أهلاً ' + name + '! تم تسجيل الدخول بنجاح.');
-            }
+            // NOTE: this quick name+email form is just a customer account and
+            // no longer grants admin access on its own — admin access now
+            // requires a real password sign-in via "إدارة الموقع" at the
+            // bottom of the page, checked against Firebase Authentication.
+            alert('أهلاً ' + name + '! تم تسجيل الدخول بنجاح.');
 
             updateUserUI();
             registerModal.classList.remove('active');
@@ -2274,6 +2307,7 @@
             currentUser = null;
             localStorage.removeItem('fifa_current_user');
             // Logging out also revokes admin access if it was tied to this session
+            if (isFirebaseConfigured) firebaseAuth.signOut();
             localStorage.removeItem('fifa_admin');
             updateAdminUI();
             updateUserUI();
