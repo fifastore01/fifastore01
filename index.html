@@ -1786,6 +1786,7 @@
         let cart = JSON.parse(localStorage.getItem('fifa_cart')) || [];
         let selectedSize = "M";
         let editingProductId = null;
+        let productsLoadingTimeoutId = null;
         let currentUser = JSON.parse(localStorage.getItem('fifa_current_user')) || null;
 
         /* SITE SETTINGS (editable content: contact info, social links, banner, footer, features) */
@@ -1932,6 +1933,14 @@
         function getCategoryName(cat) {
             const found = categories.find(c => c.key === cat);
             return found ? found.name : 'عام';
+        }
+
+        // Shown the moment the page opens (when Firebase is configured) instead of
+        // any locally-cached product list, so the very first thing a customer sees
+        // is never a stale/incomplete catalog — just a short loading state until
+        // the real, current list arrives from the server.
+        function showProductsLoading() {
+            productsGrid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-spinner fa-spin" style="font-size:2rem; margin-bottom:15px;"></i><p>جاري تحميل أحدث التشكيلة...</p></div>';
         }
 
         // Whenever a product is added / edited / deleted (or synced from another
@@ -2381,6 +2390,10 @@
            device the admin made the change from. */
         if (isFirebaseConfigured) {
             firebaseDB.ref('fifa_products').on('value', (snapshot) => {
+                if (productsLoadingTimeoutId) {
+                    clearTimeout(productsLoadingTimeoutId);
+                    productsLoadingTimeoutId = null;
+                }
                 const val = snapshot.val();
                 if (val) {
                     products = val;
@@ -2392,9 +2405,11 @@
                         // it's just the local offline cache failing, not the real update.
                         console.warn('localStorage full, skipping local product cache', err);
                     }
-                    refreshProductsView();
-                    renderAdminProductsList();
                 }
+                // Always render — even when val is empty/null (a genuinely empty
+                // store) — so the loading state never gets stuck on screen forever.
+                refreshProductsView();
+                renderAdminProductsList();
             });
             firebaseDB.ref('fifa_settings').on('value', (snapshot) => {
                 const val = snapshot.val();
@@ -2915,7 +2930,22 @@
         renderProdCategoryOptions();
         renderAdminCategoriesList();
         renderProdSizesBox(ALL_SIZES);
-        renderProducts();
+        // Show the products list right away when Firebase isn't set up (nothing to
+        // wait for). When it IS set up, show a loading state instead of whatever's
+        // sitting in this device's local cache — the Firebase listener above
+        // (registered earlier in this script) will render the real, current
+        // catalog the moment it responds. A short timeout falls back to the local
+        // cache only if Firebase hasn't answered at all (e.g. no internet), so the
+        // store never gets stuck on a spinner forever.
+        if (isFirebaseConfigured) {
+            showProductsLoading();
+            productsLoadingTimeoutId = setTimeout(() => {
+                productsLoadingTimeoutId = null;
+                refreshProductsView();
+            }, 4000);
+        } else {
+            renderProducts();
+        }
         renderCartGovernorateOptions();
         updateCartUI();
         showAdminTab('products');
