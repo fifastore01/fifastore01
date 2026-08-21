@@ -2358,7 +2358,14 @@
                 const val = snapshot.val();
                 if (val) {
                     products = val;
-                    localStorage.setItem('fifa_products', JSON.stringify(products));
+                    try {
+                        localStorage.setItem('fifa_products', JSON.stringify(products));
+                    } catch (err) {
+                        // localStorage can fill up fast once product images are stored as
+                        // base64. That must NEVER block showing the live Firebase data —
+                        // it's just the local offline cache failing, not the real update.
+                        console.warn('localStorage full, skipping local product cache', err);
+                    }
                     refreshProductsView();
                     renderAdminProductsList();
                 }
@@ -2367,7 +2374,7 @@
                 const val = snapshot.val();
                 if (val) {
                     settings = { ...defaultSettings, ...val };
-                    localStorage.setItem('fifa_settings', JSON.stringify(settings));
+                    try { localStorage.setItem('fifa_settings', JSON.stringify(settings)); } catch (err) { console.warn('localStorage full, skipping local settings cache', err); }
                     applySettings();
                     populateSettingsForm();
                 }
@@ -2376,7 +2383,7 @@
                 const val = snapshot.val();
                 if (val) {
                     categories = val;
-                    localStorage.setItem('fifa_categories', JSON.stringify(categories));
+                    try { localStorage.setItem('fifa_categories', JSON.stringify(categories)); } catch (err) { console.warn('localStorage full, skipping local categories cache', err); }
                     renderFilterButtons();
                     renderProdCategoryOptions();
                     renderAdminCategoriesList();
@@ -2388,7 +2395,7 @@
                 const val = snapshot.val();
                 if (val) {
                     shippingPrices = { ...defaultShippingPrices, ...val };
-                    localStorage.setItem('fifa_shipping', JSON.stringify(shippingPrices));
+                    try { localStorage.setItem('fifa_shipping', JSON.stringify(shippingPrices)); } catch (err) { console.warn('localStorage full, skipping local shipping cache', err); }
                     renderCartGovernorateOptions();
                     renderShippingAdminInputs();
                     updateCartUI();
@@ -2398,7 +2405,7 @@
                 const val = snapshot.val();
                 if (val) {
                     stats = { ...defaultStats, ...val };
-                    localStorage.setItem('fifa_stats', JSON.stringify(stats));
+                    try { localStorage.setItem('fifa_stats', JSON.stringify(stats)); } catch (err) { console.warn('localStorage full, skipping local stats cache', err); }
                     renderStatsAdmin();
                 }
             });
