@@ -2186,7 +2186,11 @@
         function toggleWishlist(id) {
             const idx = wishlist.indexOf(id);
             if (idx === -1) wishlist.push(id); else wishlist.splice(idx, 1);
-            localStorage.setItem('fifa_wishlist', JSON.stringify(wishlist));
+            try {
+                localStorage.setItem('fifa_wishlist', JSON.stringify(wishlist));
+            } catch (err) {
+                console.warn('localStorage full, skipping local wishlist cache', err);
+            }
             updateWishlistUI();
             renderProducts(currentFilter);
             const qvBtn = document.getElementById('qvWishlistBtn');
@@ -2432,7 +2436,16 @@
         }
 
         function saveCart() {
-            localStorage.setItem('fifa_cart', JSON.stringify(cart));
+            // Wrapped like the other localStorage writes below: if storage is full
+            // (often because product images take up most of the quota), this must
+            // not throw — otherwise the code right after it (updateCartUI/openCart
+            // in addToCart) never runs, and the item silently doesn't appear until
+            // something else (like picking a governorate) re-renders the cart.
+            try {
+                localStorage.setItem('fifa_cart', JSON.stringify(cart));
+            } catch (err) {
+                console.warn('localStorage full, skipping local cart cache', err);
+            }
         }
 
         function openCart() {
