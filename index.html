@@ -1912,6 +1912,17 @@
             return found ? found.name : 'عام';
         }
 
+        // Whenever a product is added / edited / deleted (or synced from another
+        // tab/device), switch the storefront back to "الكل" and show it right
+        // away — the product doesn't stay hidden behind whatever category tab
+        // happened to be selected before.
+        function refreshProductsView() {
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.filter === 'all');
+            });
+            renderProducts('all');
+        }
+
         /* --- Categories: render filter buttons + admin category dropdown/list --- */
         function renderFilterButtons() {
             filterButtonsContainer.innerHTML = '<button class="filter-btn active" data-filter="all">الكل</button>' +
@@ -2277,7 +2288,7 @@
         window.addEventListener('storage', (e) => {
             if (e.key === 'fifa_products') {
                 products = JSON.parse(e.newValue) || initialProducts;
-                renderProducts();
+                refreshProductsView();
                 renderAdminProductsList();
             } else if (e.key === 'fifa_settings') {
                 settings = { ...defaultSettings, ...(JSON.parse(e.newValue) || {}) };
@@ -2314,7 +2325,7 @@
                 if (val) {
                     products = val;
                     localStorage.setItem('fifa_products', JSON.stringify(products));
-                    renderProducts();
+                    refreshProductsView();
                     renderAdminProductsList();
                 }
             });
@@ -2547,7 +2558,7 @@
             if (!confirm('هل أنت متأكد من حذف هذا المنتج نهائياً من المتجر؟')) return;
             products = products.filter(p => p.id !== id);
             syncSharedData('fifa_products', products);
-            renderProducts();
+            refreshProductsView();
             renderAdminProductsList();
             if (editingProductId === id) resetProductForm();
         }
@@ -2605,7 +2616,7 @@
                     alert('تم إضافة المنتج الجديد بنجاح إلى المتجر!');
                 }
                 syncSharedData('fifa_products', products);
-                renderProducts();
+                refreshProductsView();
                 renderAdminProductsList();
                 resetProductForm();
             };
