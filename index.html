@@ -1006,6 +1006,60 @@
         }
 
         /* ==========================================
+           7b. IMAGE ZOOM
+           ========================================== */
+        .qv-image-wrap {
+            position: relative;
+            cursor: zoom-in;
+        }
+
+        .qv-zoom-badge {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(13, 13, 13, 0.75);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        .image-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.92);
+            z-index: 1300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            cursor: zoom-out;
+        }
+
+        .image-lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-img {
+            max-width: 92%;
+            max-height: 88vh;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+        /* ==========================================
            8. FOOTER
            ========================================== */
         footer {
@@ -1109,6 +1163,8 @@
             .banner-box { flex-direction: column; text-align: center; }
             .quick-view-grid { grid-template-columns: 1fr; }
         }
+
+
 
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
@@ -1334,6 +1390,12 @@
         <button class="close-btn" style="position: absolute; top: 15px; left: 15px;" id="closeQVBtn"><i class="fa-solid fa-xmark"></i></button>
         <div class="quick-view-grid" id="qvContent"></div>
         <div id="qvRelated"></div>
+    </div>
+
+    <!-- IMAGE ZOOM LIGHTBOX -->
+    <div class="image-lightbox" id="imageLightbox">
+        <button class="close-btn" style="position:fixed; top:20px; left:20px; font-size:1.6rem; z-index:1301;" id="closeLightboxBtn"><i class="fa-solid fa-xmark"></i></button>
+        <img src="" alt="" class="lightbox-img" id="lightboxImg">
     </div>
 
     <!-- WISHLIST MODAL -->
@@ -2055,6 +2117,9 @@
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
         const backToTopBtn = document.getElementById('backToTopBtn');
+        const imageLightbox = document.getElementById('imageLightbox');
+        const closeLightboxBtn = document.getElementById('closeLightboxBtn');
+        const lightboxImg = document.getElementById('lightboxImg');
 
         // Admin Elements
         const adminBtn = document.getElementById('adminBtn');
@@ -2156,9 +2221,6 @@
                     <div class="product-info">
                         <span class="product-category">${getCategoryName(product.category)}</span>
                         <h3 class="product-title">${product.title}</h3>
-                        <div class="product-rating">
-                            ${'<i class="fa-solid fa-star"></i>'.repeat(product.rating || 5)}
-                        </div>
                         <div class="product-bottom">
                             <div class="product-price">${product.price} ج.م</div>
                             <button class="btn btn-outline" style="padding: 6px 14px; font-size: 0.8rem;" onclick="addToCart(${product.id})">أضف للسلة</button>
@@ -2466,7 +2528,10 @@
             const gallery = [product.image, ...(product.images || [])].filter(Boolean);
             qvContent.innerHTML = `
                 <div>
-                    <img src="${product.image}" alt="${product.title}" class="qv-image" id="qvMainImage" loading="lazy" decoding="async">
+                    <div class="qv-image-wrap" onclick="openLightbox(document.getElementById('qvMainImage').src)">
+                        <img src="${product.image}" alt="${product.title}" class="qv-image" id="qvMainImage" loading="lazy" decoding="async">
+                        <span class="qv-zoom-badge"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+                    </div>
                     ${gallery.length > 1 ? `<div class="qv-gallery">${gallery.map((img, i) => `
                         <img src="${img}" class="qv-thumb ${i===0?'active':''}" loading="lazy" decoding="async" onclick="switchQVImage(this, '${img.replace(/'/g, "\\'")}')">
                     `).join('')}</div>` : ''}
@@ -2500,6 +2565,22 @@
             quickViewModal.classList.add('active');
             overlay.classList.add('active');
         }
+
+        /* --- Image zoom lightbox --- */
+        function openLightbox(src) {
+            lightboxImg.src = src;
+            imageLightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            imageLightbox.classList.remove('active');
+        }
+
+        closeLightboxBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeLightbox();
+        });
+        imageLightbox.addEventListener('click', closeLightbox);
 
         /* Share the product via the native share sheet on phones that support
            it, falling back to a ready-made WhatsApp message otherwise. */
