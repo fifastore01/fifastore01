@@ -1222,7 +1222,7 @@
     <!-- HEADER / NAVBAR -->
     <header>
         <div class="container navbar">
-            <a href="#" class="logo">
+            <a href="#" class="logo" id="headerLogoLink">
                 <img class="logo-icon" id="logoImageHeader" src="" alt="FIFA STORE" style="display:none; object-fit:contain; border-radius:4px;">
                 <svg class="logo-icon" id="logoIconHeader" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M8 2 4 6l2 3v11h12V9l2-3-4-4-4 3-4-3Z" fill="#ffffff"/>
@@ -1700,7 +1700,10 @@
 
             <div class="copyright">
                 <p>جميع الحقوق محفوظة &copy; 2026 لموقع <strong>FIFA STORE</strong> - أفضل متجر تيشرتات في مصر.</p>
-                <a href="#" id="adminLoginLink" style="display:inline-block; margin-top:10px; color: var(--text-muted); font-size:0.75rem; opacity:0.6;">إدارة الموقع</a>
+                <!-- Admin access no longer has a visible link on the page (see the
+                     "SECRET ADMIN ACCESS" block near the bottom of the script):
+                     it opens via a hidden URL hash, or by tapping the header logo
+                     5 times quickly — nothing here for an ordinary visitor to find. -->
             </div>
         </div>
     </footer>
@@ -2159,7 +2162,7 @@
         const adminProductsList = document.getElementById('adminProductsList');
         const adminProductCount = document.getElementById('adminProductCount');
         const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-        const adminLoginLink = document.getElementById('adminLoginLink');
+        const headerLogoLink = document.getElementById('headerLogoLink');
         const adminLogoutBtn = document.getElementById('adminLogoutBtn');
 
         // Register / Account Elements
@@ -2713,8 +2716,22 @@
             adminBtn.style.display = isAdmin() ? 'inline-flex' : 'none';
         }
 
-        adminLoginLink.addEventListener('click', (e) => {
-            e.preventDefault();
+        /* ==========================================
+           SECRET ADMIN ACCESS
+           ==========================================
+           There is no visible "admin" link anywhere on the page anymore — an
+           ordinary visitor has nothing to click or notice. Two hidden ways in:
+             1. A secret URL hash: opening the site with #fs-admin-panel at the
+                end of the address (e.g. https://yoursite.com/#fs-admin-panel)
+                triggers the login prompt. Bookmark that exact link on your own
+                phone/computer for one-tap access.
+             2. Tapping the header logo 3 times within 2 seconds — the fast,
+                easy way; no typing, works great on mobile.
+           Both call the same triggerAdminAccess() function below, which is
+           exactly the same prompt-based Firebase sign-in as before — nothing
+           about HOW the admin actually logs in has changed, just how that
+           login screen gets opened. */
+        function triggerAdminAccess() {
             if (isAdmin()) {
                 adminModal.classList.add('active');
                 overlay.classList.add('active');
@@ -2744,6 +2761,34 @@
                     console.warn('Admin sign-in failed', err);
                     alert('فشل تسجيل الدخول: البريد أو كلمة المرور غير صحيحة.');
                 });
+        }
+
+        const ADMIN_SECRET_HASH = '#fs-admin-panel';
+        function checkAdminHash() {
+            if (window.location.hash === ADMIN_SECRET_HASH) {
+                triggerAdminAccess();
+            }
+        }
+        window.addEventListener('hashchange', checkAdminHash);
+        // Also check once on initial page load, in case the secret link was
+        // opened directly (e.g. from a bookmark) rather than typed while the
+        // page was already open.
+        checkAdminHash();
+
+        // Secret gesture: 3 quick taps on the header logo within 2 seconds —
+        // the easiest way in, no typing needed.
+        let logoTapCount = 0;
+        let logoTapTimer = null;
+        headerLogoLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            logoTapCount++;
+            clearTimeout(logoTapTimer);
+            logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 2000);
+            if (logoTapCount >= 3) {
+                logoTapCount = 0;
+                clearTimeout(logoTapTimer);
+                triggerAdminAccess();
+            }
         });
 
         adminLogoutBtn.addEventListener('click', () => {
@@ -2977,7 +3022,7 @@
                 alert('تم تحديث صورة الموقع الرئيسية بنجاح!');
             };
             if (heroImageFileInput.files && heroImageFileInput.files[0]) {
-                compressImage(heroImageFileInput.files[0], { maxDim: 1600, quality: 0.85, format: 'image/jpeg' }).then(applyImage);
+                compressImage(heroImageFileInput.files[0], { maxDim: 1600, quality: 0.85, format: 'image/jpeg' }).then(uploadToImgbb).then(applyImage);
             } else if (heroImageUrlInput.value.trim()) {
                 applyImage(heroImageUrlInput.value.trim());
             } else {
@@ -2996,7 +3041,7 @@
                 alert('تم تحديث شعار المتجر بنجاح!');
             };
             if (logoImageFileInput.files && logoImageFileInput.files[0]) {
-                compressImage(logoImageFileInput.files[0], { maxDim: 400, quality: 0.9, format: 'image/png' }).then(applyLogo);
+                compressImage(logoImageFileInput.files[0], { maxDim: 400, quality: 0.9, format: 'image/png' }).then(uploadToImgbb).then(applyLogo);
             } else if (logoImageUrlInput.value.trim()) {
                 applyLogo(logoImageUrlInput.value.trim());
             } else {
@@ -3171,6 +3216,31 @@
             });
         }
 
+        /* Upload a compressed base64 image to imgbb (free external image host) and
+           return its public URL instead of keeping the image as base64 text. This is
+           what stops product photos from bloating Firebase's free storage/bandwidth
+           quota — Firebase only ever stores a short URL string per image now, not the
+           image itself. If the upload fails for any reason (no internet, imgbb down,
+           key removed), we fall back to the original base64 string so saving a
+           product/image never breaks — it just goes back to the old behavior for
+           that one image. */
+        const IMGBB_API_KEY = '81c30944e9a1ad52e98c6c2306a5520e';
+        function uploadToImgbb(dataUrl) {
+            const base64Only = dataUrl.split(',')[1] || dataUrl;
+            const formData = new FormData();
+            formData.append('image', base64Only);
+            return fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: 'POST',
+                body: formData
+            })
+                .then(res => res.json())
+                .then(json => (json && json.success && json.data && json.data.url) ? json.data.url : dataUrl)
+                .catch(err => {
+                    console.warn('imgbb upload failed, falling back to base64 for this image', err);
+                    return dataUrl;
+                });
+        }
+
         // Save (Add or Edit) Product — with local file upload support
         // (the device file field accepts selecting several photos from the gallery at once)
         saveProductBtn.addEventListener('click', () => {
@@ -3218,9 +3288,11 @@
             };
 
             if (fileInput.files && fileInput.files.length > 0) {
-                Promise.all(Array.from(fileInput.files).map(f => compressImage(f, { maxDim: 1280, quality: 0.85, format: 'image/jpeg' }))).then(dataUrls => {
-                    commit(dataUrls[0], dataUrls.slice(1));
-                });
+                Promise.all(Array.from(fileInput.files).map(f => compressImage(f, { maxDim: 1280, quality: 0.85, format: 'image/jpeg' })))
+                    .then(dataUrls => Promise.all(dataUrls.map(uploadToImgbb)))
+                    .then(urls => {
+                        commit(urls[0], urls.slice(1));
+                    });
             } else if (imageUrlInput) {
                 commit(imageUrlInput, []);
             } else if (editingProductId) {
