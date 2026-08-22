@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fifastore01.github.io/fifastore01/sitemap.xml
