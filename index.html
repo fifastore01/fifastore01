@@ -1805,7 +1805,24 @@
                 values). Save and reload the page — that's it, no other code
                 changes needed.
            Until you do this, the site automatically falls back to the
-           same-device localStorage sync from before. */
+           same-device localStorage sync from before.
+
+           IMPORTANT — Realtime Database Rules needed for stock to sync
+           across every visitor's device: `fifa_stock` must be writable by
+           ANYONE (a checkout is done by an ordinary customer, not a signed-in
+           admin), while `fifa_products`/`fifa_settings`/`fifa_categories`/
+           `fifa_shipping` must stay admin-only. In the Firebase console, go
+           to Realtime Database > Rules and use:
+             {
+               "rules": {
+                 "fifa_stock": { ".read": true, ".write": true },
+                 ".read": true,
+                 ".write": "auth != null"
+               }
+             }
+           Without this, a customer's order will update stock only on their
+           own device/browser (it looks like it "worked" for them) but will
+           never reach anyone else's screen. */
         const FIREBASE_CONFIG = {
             apiKey: "AIzaSyCOtXb0CNt8IG8Exgf1SdsnQUEcD1UNITM",
             authDomain: "fifastore1-7e215.firebaseapp.com",
@@ -2117,11 +2134,16 @@
         // product, or an old product being migrated) — admin edits it right after.
         const DEFAULT_SIZE_STOCK = 20;
 
-        // Returns { size: quantity } for a product, admin-only data. Products
-        // saved before stock-tracking existed (only had a `sizes` array, no
-        // numbers) are migrated on the fly here so nothing breaks or
-        // disappears until the admin actually opens and edits them.
+        // Returns { size: quantity } for a product. Reads from the shared,
+        // publicly-writable `stockData` store first (see below) — that's what
+        // lets a customer's order update stock for EVERY visitor, not just
+        // their own browser, without needing admin login. Falls back to an
+        // older embedded product.stock, then to legacy sizes, for products
+        // saved before this existed.
         function productStock(product) {
+            if (stockData[product.id] && typeof stockData[product.id] === 'object') {
+                return stockData[product.id];
+            }
             if (product.stock && typeof product.stock === 'object') return product.stock;
             const legacySizes = (product.sizes && product.sizes.length) ? product.sizes : ALL_SIZES;
             return Object.fromEntries(legacySizes.map(s => [s, DEFAULT_SIZE_STOCK]));
@@ -2148,6 +2170,12 @@
         /* LOCALSTORAGE STATE MANAGEMENT */
         let products = JSON.parse(localStorage.getItem('fifa_products')) || initialProducts;
         let categories = JSON.parse(localStorage.getItem('fifa_categories')) || defaultCategories;
+        // Stock quantities live in their OWN shared store, separate from
+        // `products` — this is what a normal customer's browser is allowed to
+        // write to directly at checkout (see FIREBASE_CONFIG notes near the
+        // top of this script for the security-rule change this needs), while
+        // the product catalog itself (title/price/images) stays admin-only.
+        let stockData = JSON.parse(localStorage.getItem('fifa_stock')) || {};
         let cart = JSON.parse(localStorage.getItem('fifa_cart')) || [];
         let wishlist = JSON.parse(localStorage.getItem('fifa_wishlist')) || [];
         let currentFilter = 'all';
@@ -2803,17 +2831,24 @@
             // Deduct the ordered quantity from stock for each cart line the
             // moment the order is sent — this is what makes a size flip to
             // "غير متوفر" (and stop being selectable) once it truly runs out.
-            // Clamped at 0 so it can never go negative.
+            // Written to `stockData` (its OWN shared store — see the
+            // FIREBASE_CONFIG notes near the top of this script) so this
+            // update reaches every visitor's browser, not just this one. A
+            // regular customer's browser is never signed in as admin, so this
+            // deliberately does NOT touch `fifa_products` (title/price/images
+            // stay admin-only) — only the separate, publicly-writable stock
+            // store. Clamped at 0 so it can never go negative.
             cart.forEach(item => {
-                const idx = products.findIndex(p => p.id === item.id);
-                if (idx === -1) return;
-                const stock = productStock(products[idx]);
-                if (Object.prototype.hasOwnProperty.call(stock, item.size)) {
-                    stock[item.size] = Math.max(0, (stock[item.size] || 0) - item.qty);
-                    products[idx] = { ...products[idx], stock };
+                const product = products.find(p => p.id === item.id);
+                if (!product) return;
+                if (!stockData[item.id] || typeof stockData[item.id] !== 'object') {
+                    stockData[item.id] = productStock(product);
+                }
+                if (Object.prototype.hasOwnProperty.call(stockData[item.id], item.size)) {
+                    stockData[item.id][item.size] = Math.max(0, (stockData[item.id][item.size] || 0) - item.qty);
                 }
             });
-            syncSharedData('fifa_products', products);
+            syncSharedData('fifa_stock', stockData);
             renderProducts(currentFilter);
             renderAdminProductsList();
 
@@ -3003,6 +3038,10 @@
                 products = JSON.parse(e.newValue) || initialProducts;
                 refreshProductsView();
                 renderAdminProductsList();
+            } else if (e.key === 'fifa_stock') {
+                stockData = JSON.parse(e.newValue) || {};
+                refreshProductsView();
+                renderAdminProductsList();
             } else if (e.key === 'fifa_settings') {
                 settings = { ...defaultSettings, ...(JSON.parse(e.newValue) || {}) };
                 applySettings();
@@ -3052,6 +3091,18 @@
                 }
                 // Always render — even when val is empty/null (a genuinely empty
                 // store) — so the loading state never gets stuck on screen forever.
+                refreshProductsView();
+                renderAdminProductsList();
+            });
+            // Stock has its own shared node so a normal customer's checkout
+            // (not signed in as admin) can still update it for everyone —
+            // see the security-rule note in FIREBASE_CONFIG above.
+            firebaseDB.ref('fifa_stock').on('value', (snapshot) => {
+                const val = snapshot.val();
+                if (val) {
+                    stockData = val;
+                    try { localStorage.setItem('fifa_stock', JSON.stringify(stockData)); } catch (err) { console.warn('localStorage full, skipping local stock cache', err); }
+                }
                 refreshProductsView();
                 renderAdminProductsList();
             });
@@ -3411,27 +3462,34 @@
 
             const commit = (imgSrc, extraImages) => {
                 const images = [...extraImages, ...urlImages];
+                let productId;
                 if (editingProductId) {
+                    productId = editingProductId;
                     const idx = products.findIndex(p => p.id === editingProductId);
                     if (idx > -1) {
-                        products[idx] = { ...products[idx], title, category, price, stock, badge, images, image: imgSrc || products[idx].image };
+                        products[idx] = { ...products[idx], title, category, price, badge, images, image: imgSrc || products[idx].image };
                     }
                     alert('تم حفظ التعديلات على المنتج بنجاح!');
                 } else {
+                    productId = Date.now();
                     products.unshift({
-                        id: Date.now(),
+                        id: productId,
                         title: title,
                         category: category,
                         price: price,
                         badge: badge,
                         rating: 5,
-                        stock: stock,
                         images: images,
                         image: imgSrc,
                         description: "قميص رياضي مميز خفيف الوزن ومتوفر بجميع المقاسات."
                     });
                     alert('تم إضافة المنتج الجديد بنجاح إلى المتجر!');
                 }
+                // Stock lives in its own shared store (see stockData near the
+                // top of this script) so a customer's checkout can update it
+                // for everyone without needing admin access.
+                stockData[productId] = stock;
+                syncSharedData('fifa_stock', stockData);
                 syncSharedData('fifa_products', products);
                 refreshProductsView();
                 renderAdminProductsList();
