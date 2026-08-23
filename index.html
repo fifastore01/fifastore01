@@ -2620,7 +2620,7 @@
                     </div>` : `<p style="color:#ff6b6b; font-weight:700; margin:10px 0;"><i class="fa-solid fa-circle-exclamation"></i> نفذت الكمية من هذا المنتج حالياً</p>`}
 
                     <div class="qv-actions-row">
-                        <button class="btn btn-primary" style="flex-grow:1; ${sizes.length ? '' : 'opacity:0.5; cursor:not-allowed;'}" ${sizes.length ? '' : 'disabled'} onclick="addToCart(${product.id}, '${selectedSize || ''}'); closeQV();">
+                        <button class="btn btn-primary" style="flex-grow:1; ${sizes.length ? '' : 'opacity:0.5; cursor:not-allowed;'}" ${sizes.length ? '' : 'disabled'} onclick="addToCart(${product.id}, selectedSize); closeQV();">
                             <i class="fa-solid fa-cart-plus"></i> إضافة للسلة الآن
                         </button>
                         <button class="btn btn-outline qv-icon-btn ${isInWishlist(product.id) ? 'active-wish' : ''}" id="qvWishlistBtn" data-pid="${product.id}" onclick="toggleWishlist(${product.id})" title="أضف للمفضلة">
