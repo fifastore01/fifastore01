@@ -1515,8 +1515,8 @@
             </div>
 
             <div class="form-group">
-                <label>المقاسات المتاحة لهذا التيشرت (اختياري — شيل أي مقاس مش متوفر)</label>
-                <div id="prodSizesBox" style="display:flex; gap:14px; flex-wrap:wrap;"></div>
+                <label>المقاسات والكمية المتاحة (حدد الكمية بجانب كل مقاس — لما الكمية توصل صفر، المقاس ده يختفي تلقائي من صفحة المنتج للعملاء. الكمية دي تظهر لك كأدمن بس)</label>
+                <div id="prodSizesBox" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
             </div>
             
             <div class="form-group">
@@ -2087,12 +2087,30 @@
         ];
 
         /* All possible t-shirt sizes. Admin picks which of these are
-           available per product when adding/editing it. */
+           available per product when adding/editing it, and sets a stock
+           quantity for each one. */
         const ALL_SIZES = ['S', 'M', 'L', 'XL', 'XXL', '3XL'];
+
+        // Starting quantity given to a size the moment it's ticked (new
+        // product, or an old product being migrated) — admin edits it right after.
+        const DEFAULT_SIZE_STOCK = 20;
+
+        // Returns { size: quantity } for a product, admin-only data. Products
+        // saved before stock-tracking existed (only had a `sizes` array, no
+        // numbers) are migrated on the fly here so nothing breaks or
+        // disappears until the admin actually opens and edits them.
+        function productStock(product) {
+            if (product.stock && typeof product.stock === 'object') return product.stock;
+            const legacySizes = (product.sizes && product.sizes.length) ? product.sizes : ALL_SIZES;
+            return Object.fromEntries(legacySizes.map(s => [s, DEFAULT_SIZE_STOCK]));
+        }
+
+        // Customer-facing sizes: only ones that still have stock left. This
+        // is the ONLY size info that should ever reach product cards, quick
+        // view, or the cart — the quantities themselves stay admin-only.
         function productSizes(product) {
-            // Older products saved before this feature (or a product saved
-            // with no sizes chosen) simply show every size.
-            return (product.sizes && product.sizes.length) ? product.sizes : ALL_SIZES;
+            const stock = productStock(product);
+            return ALL_SIZES.filter(s => (stock[s] || 0) > 0);
         }
 
         /* LOCALSTORAGE STATE MANAGEMENT */
@@ -2248,16 +2266,17 @@
             }
 
             filteredProducts.forEach(product => {
+                const outOfStock = productSizes(product).length === 0;
                 const productEl = document.createElement('div');
                 productEl.className = 'product-card';
                 productEl.innerHTML = `
-                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                    ${outOfStock ? `<span class="product-badge" style="background-color:#ff4d4d;">نفذت الكمية</span>` : (product.badge ? `<span class="product-badge">${product.badge}</span>` : '')}
                     <div class="product-image-container">
-                        <img src="${product.image}" alt="${product.title}" class="product-image" loading="lazy" decoding="async">
+                        <img src="${product.image}" alt="${product.title}" class="product-image" loading="lazy" decoding="async" style="${outOfStock ? 'opacity:0.5;' : ''}">
                         <div class="product-actions">
                             <button class="action-btn wishlist-toggle ${isInWishlist(product.id) ? 'active' : ''}" onclick="toggleWishlist(${product.id})" title="أضف للمفضلة"><i class="fa-solid fa-heart"></i></button>
                             <button class="action-btn" onclick="openQuickView(${product.id})" title="معاينة سريعة"><i class="fa-solid fa-eye"></i></button>
-                            <button class="action-btn" onclick="addToCart(${product.id})" title="إضافة للسلة"><i class="fa-solid fa-cart-plus"></i></button>
+                            ${outOfStock ? '' : `<button class="action-btn" onclick="addToCart(${product.id})" title="إضافة للسلة"><i class="fa-solid fa-cart-plus"></i></button>`}
                         </div>
                     </div>
                     <div class="product-info">
@@ -2265,7 +2284,9 @@
                         <h3 class="product-title">${product.title}</h3>
                         <div class="product-bottom">
                             <div class="product-price">${product.price} ج.م</div>
-                            <button class="btn btn-outline" style="padding: 6px 14px; font-size: 0.8rem;" onclick="addToCart(${product.id})">أضف للسلة</button>
+                            ${outOfStock
+                                ? `<button class="btn btn-outline" style="padding: 6px 14px; font-size: 0.8rem; opacity:0.5; cursor:not-allowed;" disabled>غير متوفر</button>`
+                                : `<button class="btn btn-outline" style="padding: 6px 14px; font-size: 0.8rem;" onclick="addToCart(${product.id})">أضف للسلة</button>`}
                         </div>
                     </div>
                 `;
@@ -2450,7 +2471,14 @@
         /* 3. CART SYSTEM */
         function addToCart(id, size = null) {
             const product = products.find(p => p.id === id);
-            if (!size) size = productSizes(product)[0];
+            if (!size) {
+                const available = productSizes(product);
+                if (available.length === 0) {
+                    alert('نأسف، هذا المنتج نفذ من جميع المقاسات حالياً.');
+                    return;
+                }
+                size = available[0];
+            }
             const existingItem = cart.find(item => item.id === id && item.size === size);
 
             if (existingItem) {
@@ -2583,15 +2611,16 @@
                     <div class="qv-price">${product.price} ج.م</div>
                     <p class="qv-desc">${product.description}</p>
                     
+                    ${sizes.length ? `
                     <div class="size-selector">
                         <label>اختر المقاس:</label>
                         <div class="size-options">
                             ${sizes.map(s => `<button class="size-btn ${selectedSize===s?'active':''}" onclick="selectSize(this, '${s}')">${s}</button>`).join('')}
                         </div>
-                    </div>
+                    </div>` : `<p style="color:#ff6b6b; font-weight:700; margin:10px 0;"><i class="fa-solid fa-circle-exclamation"></i> نفذت الكمية من هذا المنتج حالياً</p>`}
 
                     <div class="qv-actions-row">
-                        <button class="btn btn-primary" style="flex-grow:1;" onclick="addToCart(${product.id}, '${selectedSize}'); closeQV();">
+                        <button class="btn btn-primary" style="flex-grow:1; ${sizes.length ? '' : 'opacity:0.5; cursor:not-allowed;'}" ${sizes.length ? '' : 'disabled'} onclick="addToCart(${product.id}, '${selectedSize || ''}'); closeQV();">
                             <i class="fa-solid fa-cart-plus"></i> إضافة للسلة الآن
                         </button>
                         <button class="btn btn-outline qv-icon-btn ${isInWishlist(product.id) ? 'active-wish' : ''}" id="qvWishlistBtn" data-pid="${product.id}" onclick="toggleWishlist(${product.id})" title="أضف للمفضلة">
@@ -3136,6 +3165,9 @@
                     <div style="flex-grow:1; min-width:0;">
                         <div style="font-size:0.85rem; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${p.title}</div>
                         <div style="font-size:0.75rem; color:var(--text-muted);">${getCategoryName(p.category)} · ${p.price} ج.م</div>
+                        <div style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">
+                            ${Object.entries(productStock(p)).map(([s, q]) => `<span style="${q <= 0 ? 'color:#ff6b6b;' : ''}">${s}: ${q}</span>`).join(' · ')}
+                        </div>
                     </div>
                     <button class="action-btn" style="width:32px;height:32px;font-size:0.8rem;" onclick="startEditProduct(${p.id})" title="تعديل"><i class="fa-solid fa-pen"></i></button>
                     <button class="action-btn" style="width:32px;height:32px;font-size:0.8rem; background-color:#ff4d4d;" onclick="deleteProduct(${p.id})" title="حذف"><i class="fa-solid fa-trash"></i></button>
@@ -3143,19 +3175,41 @@
             `).join('') || '<p style="padding:15px; color:var(--text-muted); font-size:0.85rem;">لا توجد منتجات بعد.</p>';
         }
 
-        // Draw the size checkboxes for the product form, ticking whichever
-        // sizes are passed in (defaults to all sizes ticked for a new product).
-        function renderProdSizesBox(checkedSizes) {
-            const checked = checkedSizes && checkedSizes.length ? checkedSizes : ALL_SIZES;
-            prodSizesBox.innerHTML = ALL_SIZES.map(s => `
-                <label style="display:flex; align-items:center; gap:5px; font-weight:600; cursor:pointer;">
-                    <input type="checkbox" class="prod-size-check" value="${s}" ${checked.includes(s) ? 'checked' : ''}> ${s}
-                </label>
-            `).join('');
+        // Draws one row per size: a checkbox (is this size sold at all) plus
+        // a quantity field (how many are left). The quantity is admin-only —
+        // it's read back only inside the admin panel and never shows up
+        // anywhere on the customer-facing site; customers only ever see
+        // whether a size is available (via productSizes()), never the number.
+        function renderProdSizesBox(stockObj) {
+            const stock = stockObj && Object.keys(stockObj).length
+                ? stockObj
+                : Object.fromEntries(ALL_SIZES.map(s => [s, DEFAULT_SIZE_STOCK]));
+            prodSizesBox.innerHTML = ALL_SIZES.map(s => {
+                const checked = Object.prototype.hasOwnProperty.call(stock, s);
+                const qty = checked ? stock[s] : DEFAULT_SIZE_STOCK;
+                return `
+                <div style="display:flex; align-items:center; gap:8px; background:var(--surface-light); padding:6px 10px; border-radius:6px;">
+                    <label style="display:flex; align-items:center; gap:5px; font-weight:600; cursor:pointer;">
+                        <input type="checkbox" class="prod-size-check" value="${s}" ${checked ? 'checked' : ''}
+                               onchange="this.parentElement.nextElementSibling.disabled = !this.checked;"> ${s}
+                    </label>
+                    <input type="number" class="form-control prod-size-stock" data-size="${s}" min="0" value="${qty}" ${checked ? '' : 'disabled'}
+                           style="width:70px; padding:5px 8px; font-size:0.85rem;" title="الكمية المتوفرة بمقاس ${s} — يظهر للأدمن فقط">
+                </div>`;
+            }).join('');
         }
 
-        function getSelectedSizesFromForm() {
-            return Array.from(prodSizesBox.querySelectorAll('.prod-size-check:checked')).map(el => el.value);
+        // Reads the admin-only stock panel into { size: quantity } for every
+        // ticked size. This is what gets saved on the product; the customer
+        // side only ever derives availability from it via productSizes().
+        function getStockFromForm() {
+            const stock = {};
+            prodSizesBox.querySelectorAll('.prod-size-check:checked').forEach(cb => {
+                const qtyInput = prodSizesBox.querySelector(`.prod-size-stock[data-size="${cb.value}"]`);
+                const qty = parseInt(qtyInput.value, 10);
+                stock[cb.value] = (isNaN(qty) || qty < 0) ? 0 : qty;
+            });
+            return stock;
         }
 
         function resetProductForm() {
@@ -3168,7 +3222,7 @@
             document.getElementById('prodFileInput').value = '';
             prodExtraImages.value = '';
             prodBadge.value = 'جديد';
-            renderProdSizesBox(ALL_SIZES);
+            renderProdSizesBox(null);
             productFormTitle.textContent = 'إضافة منتج جديد';
             saveProductBtn.innerHTML = '<i class="fa-solid fa-plus"></i> إضافة المنتج للمتجر';
             cancelEditBtn.style.display = 'none';
@@ -3185,7 +3239,7 @@
             document.getElementById('prodFileInput').value = '';
             prodExtraImages.value = (p.images || []).join('\n');
             prodBadge.value = p.badge || '';
-            renderProdSizesBox(productSizes(p));
+            renderProdSizesBox(productStock(p));
             productFormTitle.textContent = 'تعديل المنتج: ' + p.title;
             saveProductBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات';
             cancelEditBtn.style.display = 'inline-flex';
@@ -3288,12 +3342,16 @@
             const price = parseFloat(document.getElementById('prodPrice').value);
             const fileInput = document.getElementById('prodFileInput');
             const imageUrlInput = document.getElementById('prodImageUrl').value;
-            const sizes = getSelectedSizesFromForm();
+            const stock = getStockFromForm();
             const urlImages = prodExtraImages.value.split('\n').map(s => s.trim()).filter(Boolean);
             const badge = prodBadge.value.trim() || 'جديد';
 
             if(!title || !price || price <= 0) {
                 alert('يرجى ملء اسم المنتج وكتابة سعر صحيح أكبر من صفر!');
+                return;
+            }
+            if (Object.keys(stock).length === 0) {
+                alert('يرجى اختيار مقاس واحد على الأقل وتحديد الكمية المتوفرة منه!');
                 return;
             }
 
@@ -3302,7 +3360,7 @@
                 if (editingProductId) {
                     const idx = products.findIndex(p => p.id === editingProductId);
                     if (idx > -1) {
-                        products[idx] = { ...products[idx], title, category, price, sizes, badge, images, image: imgSrc || products[idx].image };
+                        products[idx] = { ...products[idx], title, category, price, stock, badge, images, image: imgSrc || products[idx].image };
                     }
                     alert('تم حفظ التعديلات على المنتج بنجاح!');
                 } else {
@@ -3313,7 +3371,7 @@
                         price: price,
                         badge: badge,
                         rating: 5,
-                        sizes: sizes,
+                        stock: stock,
                         images: images,
                         image: imgSrc,
                         description: "قميص رياضي مميز خفيف الوزن ومتوفر بجميع المقاسات."
@@ -3522,7 +3580,7 @@
         renderFilterButtons();
         renderProdCategoryOptions();
         renderAdminCategoriesList();
-        renderProdSizesBox(ALL_SIZES);
+        renderProdSizesBox(null);
         // Show the products list right away when Firebase isn't set up (nothing to
         // wait for). When it IS set up, show a loading state instead of whatever's
         // sitting in this device's local cache — the Firebase listener above
