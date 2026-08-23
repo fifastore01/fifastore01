@@ -1019,6 +1019,28 @@
             color: #000000;
         }
 
+        /* Sold-out size: shown so the customer knows it exists, but red,
+           struck-through and impossible to click/select. */
+        .size-btn-out {
+            width: auto;
+            min-width: 40px;
+            height: 40px;
+            padding: 0 10px;
+            border: 1px solid #ff4d4d;
+            background: rgba(255, 77, 77, 0.1);
+            color: #ff4d4d;
+            border-radius: 4px;
+            font-weight: 600;
+            text-decoration: line-through;
+            cursor: not-allowed;
+            opacity: 0.85;
+        }
+
+        .size-btn-out:hover {
+            background: rgba(255, 77, 77, 0.1);
+            color: #ff4d4d;
+        }
+
         /* Admin Forms */
         .form-group {
             margin-bottom: 20px;
@@ -2113,6 +2135,16 @@
             return ALL_SIZES.filter(s => (stock[s] || 0) > 0);
         }
 
+        // Every size the admin picked for this product, in stock or not —
+        // used only to DISPLAY the full size row (so a sold-out size still
+        // shows up, crossed out, instead of vanishing). Never use this to
+        // decide what a customer can actually select/order — that's
+        // productSizes() above.
+        function productConfiguredSizes(product) {
+            const stock = productStock(product);
+            return ALL_SIZES.filter(s => Object.prototype.hasOwnProperty.call(stock, s));
+        }
+
         /* LOCALSTORAGE STATE MANAGEMENT */
         let products = JSON.parse(localStorage.getItem('fifa_products')) || initialProducts;
         let categories = JSON.parse(localStorage.getItem('fifa_categories')) || defaultCategories;
@@ -2593,8 +2625,10 @@
         /* 4. QUICK VIEW MODAL */
         function openQuickView(id) {
             const product = products.find(p => p.id === id);
-            const sizes = productSizes(product);
-            selectedSize = sizes[0];
+            const configuredSizes = productConfiguredSizes(product);
+            const stock = productStock(product);
+            const availableSizes = productSizes(product);
+            selectedSize = availableSizes[0] || null;
             const gallery = [product.image, ...(product.images || [])].filter(Boolean);
             qvContent.innerHTML = `
                 <div>
@@ -2611,16 +2645,19 @@
                     <div class="qv-price">${product.price} ج.م</div>
                     <p class="qv-desc">${product.description}</p>
                     
-                    ${sizes.length ? `
+                    ${configuredSizes.length ? `
                     <div class="size-selector">
                         <label>اختر المقاس:</label>
                         <div class="size-options">
-                            ${sizes.map(s => `<button class="size-btn ${selectedSize===s?'active':''}" onclick="selectSize(this, '${s}')">${s}</button>`).join('')}
+                            ${configuredSizes.map(s => (stock[s] || 0) > 0
+                                ? `<button class="size-btn ${selectedSize===s?'active':''}" onclick="selectSize(this, '${s}')">${s}</button>`
+                                : `<button class="size-btn-out" disabled title="غير متوفر">${s} - غير متوفر</button>`
+                            ).join('')}
                         </div>
                     </div>` : `<p style="color:#ff6b6b; font-weight:700; margin:10px 0;"><i class="fa-solid fa-circle-exclamation"></i> نفذت الكمية من هذا المنتج حالياً</p>`}
 
                     <div class="qv-actions-row">
-                        <button class="btn btn-primary" style="flex-grow:1; ${sizes.length ? '' : 'opacity:0.5; cursor:not-allowed;'}" ${sizes.length ? '' : 'disabled'} onclick="addToCart(${product.id}, selectedSize); closeQV();">
+                        <button class="btn btn-primary" style="flex-grow:1; ${availableSizes.length ? '' : 'opacity:0.5; cursor:not-allowed;'}" ${availableSizes.length ? '' : 'disabled'} onclick="addToCart(${product.id}, selectedSize); closeQV();">
                             <i class="fa-solid fa-cart-plus"></i> إضافة للسلة الآن
                         </button>
                         <button class="btn btn-outline qv-icon-btn ${isInWishlist(product.id) ? 'active-wish' : ''}" id="qvWishlistBtn" data-pid="${product.id}" onclick="toggleWishlist(${product.id})" title="أضف للمفضلة">
@@ -2762,6 +2799,23 @@
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(message).catch(() => {});
             }
+
+            // Deduct the ordered quantity from stock for each cart line the
+            // moment the order is sent — this is what makes a size flip to
+            // "غير متوفر" (and stop being selectable) once it truly runs out.
+            // Clamped at 0 so it can never go negative.
+            cart.forEach(item => {
+                const idx = products.findIndex(p => p.id === item.id);
+                if (idx === -1) return;
+                const stock = productStock(products[idx]);
+                if (Object.prototype.hasOwnProperty.call(stock, item.size)) {
+                    stock[item.size] = Math.max(0, (stock[item.size] || 0) - item.qty);
+                    products[idx] = { ...products[idx], stock };
+                }
+            });
+            syncSharedData('fifa_products', products);
+            renderProducts(currentFilter);
+            renderAdminProductsList();
 
             let whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(waText)}`;
             window.open(whatsappUrl, '_blank');
