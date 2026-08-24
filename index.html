@@ -1296,6 +1296,7 @@
                 <li><a href="#hero" class="active">الرئيسية</a></li>
                 <li><a href="#products">القمصان</a></li>
                 <li><a href="#features">مميزاتنا</a></li>
+                <li><a href="#" id="navOrderConfirmLink">تفاصيل تأكيد الاوردر</a></li>
                 <li><a href="#about">عن المتجر</a></li>
             </ul>
 
@@ -1356,6 +1357,11 @@
                     <i class="fa-solid fa-truck-fast feature-icon"></i>
                     <h3 class="feature-title" id="feature1Title">توصيل سريع</h3>
                     <p class="feature-desc" id="feature1Desc">شحن متوفر لكافة المحافظات مع المعاينة قبل الاستلام.</p>
+                </div>
+                <div class="feature-card" id="orderConfirmFeatureCard" style="cursor:pointer;">
+                    <i class="fa-solid fa-circle-check feature-icon"></i>
+                    <h3 class="feature-title">تفاصيل تأكيد الاوردر</h3>
+                    <p class="feature-desc">اضغط هنا لمعرفة خطوات تأكيد طلبك بعد الشراء.</p>
                 </div>
                 <div class="feature-card">
                     <i class="fa-solid fa-tags feature-icon"></i>
@@ -1464,6 +1470,24 @@
         <button class="close-btn" style="position: absolute; top: 15px; left: 15px;" id="closeWishlistBtn"><i class="fa-solid fa-xmark"></i></button>
         <h2 style="margin-bottom:10px; font-size:1.3rem; font-weight:800;"><i class="fa-solid fa-heart" style="color:#ff4d6d;"></i> المفضلة</h2>
         <div class="wishlist-body" id="wishlistBody"></div>
+    </div>
+
+    <!-- ORDER CONFIRMATION DETAILS MODAL -->
+    <div class="modal" id="orderConfirmModal">
+        <button class="close-btn" style="position: absolute; top: 15px; left: 15px;" id="closeOrderConfirmBtn"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="font-weight:800; margin-bottom:20px;"><i class="fa-solid fa-circle-check" style="color:#4ade80;"></i> تفاصيل تأكيد الأوردر</h2>
+
+        <ol style="padding-inline-start: 20px; margin-bottom: 20px; line-height: 2;">
+            <li>تحويل فلوس الشحن على الرقم ده فودافون كاش: <strong style="user-select:all;">01080536636</strong></li>
+            <li>الاسم</li>
+            <li>العنوان: المحافظة - اسم المدينة أو القرية - الشارع - رقم العمارة - رقم الشقة</li>
+            <li>رقم التليفون</li>
+        </ol>
+
+        <p style="color: var(--text-muted); font-size: 0.9rem; padding: 15px; background-color: var(--surface-light); border-radius: 8px;">
+            <i class="fa-solid fa-circle-info"></i>
+            التوصيل بيكون عن طريق شحن البريد المصري خدمة "وصلها" (البريد مفيهوش معاينة للاستبدال أو الاسترجاع، بنبعتلك مندوب يستلم منك تاني، لكن الشحن على حضرتك).
+        </p>
     </div>
 
     <!-- REGISTER / ACCOUNT MODAL -->
@@ -2281,6 +2305,12 @@
         const saveSettingsBtn = document.getElementById('saveSettingsBtn');
         const headerLogoLink = document.getElementById('headerLogoLink');
         const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+
+        // Order Confirmation Details Elements
+        const orderConfirmFeatureCard = document.getElementById('orderConfirmFeatureCard');
+        const orderConfirmModal = document.getElementById('orderConfirmModal');
+        const closeOrderConfirmBtn = document.getElementById('closeOrderConfirmBtn');
+        const navOrderConfirmLink = document.getElementById('navOrderConfirmLink');
 
         // Register / Account Elements
         const userBtn = document.getElementById('userBtn');
@@ -3650,12 +3680,28 @@
         cartBtn.addEventListener('click', openCart);
         closeCartBtn.addEventListener('click', closeCart);
         closeQVBtn.addEventListener('click', closeQV);
+        function openOrderConfirmModal() {
+            orderConfirmModal.classList.add('active');
+            overlay.classList.add('active');
+        }
+        orderConfirmFeatureCard.addEventListener('click', openOrderConfirmModal);
+        navOrderConfirmLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            navLinks.classList.remove('active');
+            openOrderConfirmModal();
+        });
+        closeOrderConfirmBtn.addEventListener('click', () => {
+            orderConfirmModal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
         overlay.addEventListener('click', () => {
             closeCart();
             closeQV();
             closeWishlist();
             adminModal.classList.remove('active');
             registerModal.classList.remove('active');
+            orderConfirmModal.classList.remove('active');
         });
 
         menuToggle.addEventListener('click', () => {
