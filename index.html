@@ -1067,6 +1067,167 @@
         }
 
         /* ==========================================
+           ADMIN PANEL — VISUAL REDESIGN (scoped to #adminModal only,
+           doesn't touch the rest of the site's look)
+           ========================================== */
+        #adminModal {
+            --admin-accent: #22c55e;
+            --admin-accent-soft: rgba(34, 197, 94, 0.14);
+            max-width: 1000px;
+            padding: 24px 26px 30px;
+            background: linear-gradient(180deg, #1e1e1e 0%, var(--surface-color) 160px, var(--surface-color) 100%);
+            border: 1px solid #2a2a2a;
+            scrollbar-width: thin;
+            scrollbar-color: var(--admin-accent) var(--surface-color);
+        }
+
+        #adminModal::-webkit-scrollbar { width: 8px; }
+        #adminModal::-webkit-scrollbar-thumb { background: #333; border-radius: 8px; }
+
+        #adminModal .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        #adminModal .admin-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem;
+        }
+
+        #adminModal .admin-header h2 i {
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--admin-accent-soft);
+            color: var(--admin-accent);
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        #adminModal .admin-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 26px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        #adminModal .admin-tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 16px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            background: var(--surface-light);
+            color: var(--text-muted);
+            border: 1px solid transparent;
+        }
+
+        #adminModal .admin-tab-btn:hover {
+            color: #ffffff;
+            border-color: var(--border-color);
+        }
+
+        #adminModal .admin-tab-btn.active {
+            background: var(--admin-accent);
+            color: #06210f;
+            box-shadow: 0 4px 14px rgba(34, 197, 94, 0.28);
+        }
+
+        #adminModal h3 {
+            position: relative;
+            padding-right: 14px;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        #adminModal h3::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 2px;
+            bottom: 2px;
+            width: 4px;
+            border-radius: 3px;
+            background: var(--admin-accent);
+        }
+
+        #adminModal .filter-pill {
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid var(--border-color);
+        }
+
+        #adminModal .filter-pill.active {
+            background: var(--admin-accent);
+            border-color: var(--admin-accent);
+            color: #06210f;
+        }
+
+        #adminModal .admin-stat-card {
+            background: var(--surface-light);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        #adminModal .admin-stat-card:hover {
+            border-color: var(--admin-accent);
+        }
+
+        #adminModal .admin-stage-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+
+        #adminModal .order-card {
+            border: 1px solid var(--border-color);
+            border-right: 3px solid var(--card-accent, var(--admin-accent));
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 14px;
+            background: var(--surface-light);
+        }
+
+        #adminModal .order-card:hover {
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        #adminModal .status-select {
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        /* ==========================================
            7b. IMAGE ZOOM
            ========================================== */
         .qv-image-wrap {
@@ -1432,6 +1593,14 @@
         </div>
         <div class="cart-body" id="cartBody"></div>
         <div class="cart-footer">
+            <div class="form-group" style="margin-bottom:12px;">
+                <label style="font-size:0.85rem;">الاسم بالكامل</label>
+                <input type="text" id="cartCustomerName" class="form-control" placeholder="اكتب اسمك بالكامل">
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label style="font-size:0.85rem;">رقم الهاتف</label>
+                <input type="text" id="cartCustomerPhone" class="form-control" placeholder="01XXXXXXXXX">
+            </div>
             <div class="shipping-select-box" style="margin-bottom:15px;">
                 <h4 style="font-size:0.9rem; margin-bottom:8px;">أسعار الشحن لجميع المحافظات</h4>
                 <select id="cartGovernorate" class="form-control">
@@ -1520,17 +1689,20 @@
     <!-- ADMIN MODAL (FULL SITE CONTROL) -->
     <div class="modal" id="adminModal">
         <button class="close-btn" style="position: absolute; top: 15px; left: 15px;" id="closeAdminBtn"><i class="fa-solid fa-xmark"></i></button>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-            <h2 style="font-weight:800;"><i class="fa-solid fa-sliders"></i> لوحة تحكم المتجر (Admin)</h2>
+        <div class="admin-header">
+            <h2><i class="fa-solid fa-sliders"></i> لوحة تحكم المتجر (Admin)</h2>
             <button class="remove-item" id="adminLogoutBtn" style="font-size:0.85rem;"><i class="fa-solid fa-right-from-bracket"></i> تسجيل خروج</button>
         </div>
 
-        <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom:10px; flex-wrap:wrap;">
-            <button class="btn btn-outline" style="padding:5px 15px;" id="tabProductBtn">إدارة المنتجات</button>
-            <button class="btn btn-outline" style="padding:5px 15px;" id="tabHeroBtn">تعديل الرئيسية (Hero)</button>
-            <button class="btn btn-outline" style="padding:5px 15px;" id="tabSettingsBtn">إعدادات عامة</button>
-            <button class="btn btn-outline" style="padding:5px 15px;" id="tabShippingBtn">أسعار الشحن</button>
-            <button class="btn btn-outline" style="padding:5px 15px;" id="tabStatsBtn">الإحصائيات والتقرير اليومي</button>
+        <div class="admin-tabs">
+            <button class="admin-tab-btn" data-tab="products" id="tabProductBtn"><i class="fa-solid fa-shirt"></i> إدارة المنتجات</button>
+            <button class="admin-tab-btn" data-tab="hero" id="tabHeroBtn"><i class="fa-solid fa-image"></i> تعديل الرئيسية (Hero)</button>
+            <button class="admin-tab-btn" data-tab="settings" id="tabSettingsBtn"><i class="fa-solid fa-gear"></i> إعدادات عامة</button>
+            <button class="admin-tab-btn" data-tab="shipping" id="tabShippingBtn"><i class="fa-solid fa-truck-fast"></i> أسعار الشحن</button>
+            <button class="admin-tab-btn" data-tab="stats" id="tabStatsBtn"><i class="fa-solid fa-chart-line"></i> الإحصائيات والتقرير اليومي</button>
+            <button class="admin-tab-btn" data-tab="orders" id="tabOrdersBtn"><i class="fa-solid fa-box-open"></i> الطلبات الجارية</button>
+            <button class="admin-tab-btn" data-tab="customers" id="tabCustomersBtn"><i class="fa-solid fa-users"></i> العملاء</button>
+            <button class="admin-tab-btn" data-tab="finance" id="tabFinanceBtn"><i class="fa-solid fa-sack-dollar"></i> إحصائيات الفلوس</button>
         </div>
 
         <!-- Section 1: Manage Products (List + Add/Edit form) -->
@@ -1704,21 +1876,40 @@
         <!-- Section 5: Visitor / registration stats + daily email report -->
         <div id="statsAdminSection" style="display: none;">
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;">
-                <div style="background:var(--surface-light); border-radius:8px; padding:15px; text-align:center;">
+                <div class="admin-stat-card">
                     <div style="font-size:1.6rem; font-weight:800;" id="statVisitsToday">0</div>
                     <div style="font-size:0.8rem; color:var(--text-muted);">زوار اليوم</div>
                 </div>
-                <div style="background:var(--surface-light); border-radius:8px; padding:15px; text-align:center;">
+                <div class="admin-stat-card">
                     <div style="font-size:1.6rem; font-weight:800;" id="statVisitsTotal">0</div>
                     <div style="font-size:0.8rem; color:var(--text-muted);">إجمالي الزوار</div>
                 </div>
-                <div style="background:var(--surface-light); border-radius:8px; padding:15px; text-align:center;">
+                <div class="admin-stat-card">
                     <div style="font-size:1.6rem; font-weight:800;" id="statRegsToday">0</div>
                     <div style="font-size:0.8rem; color:var(--text-muted);">تسجيلات اليوم</div>
                 </div>
-                <div style="background:var(--surface-light); border-radius:8px; padding:15px; text-align:center;">
+                <div class="admin-stat-card">
                     <div style="font-size:1.6rem; font-weight:800;" id="statRegsTotal">0</div>
                     <div style="font-size:0.8rem; color:var(--text-muted);">إجمالي التسجيلات</div>
+                </div>
+            </div>
+            <h3 style="margin-bottom:12px; font-size:1rem;">إحصائيات الطلبات والعملاء</h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;">
+                <div class="admin-stat-card">
+                    <div style="font-size:1.6rem; font-weight:800;" id="statOrdersTotal">0</div>
+                    <div style="font-size:0.8rem; color:var(--text-muted);">إجمالي الطلبات</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div style="font-size:1.6rem; font-weight:800;" id="statOrdersPending">0</div>
+                    <div style="font-size:0.8rem; color:var(--text-muted);">جاري التسليم</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div style="font-size:1.6rem; font-weight:800;" id="statOrdersDelivered">0</div>
+                    <div style="font-size:0.8rem; color:var(--text-muted);">تم التسليم</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div style="font-size:1.6rem; font-weight:800;" id="statCustomersTotal">0</div>
+                    <div style="font-size:0.8rem; color:var(--text-muted);">عدد العملاء</div>
                 </div>
             </div>
             <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:15px;">
@@ -1727,6 +1918,120 @@
                 فوري دلوقتي بالزر التالي.
             </p>
             <button class="btn btn-outline" id="sendReportNowBtn"><i class="fa-solid fa-paper-plane"></i> إرسال تقرير الآن</button>
+        </div>
+
+        <!-- Section 6: Current / ongoing orders (full order tracking) -->
+        <div id="ordersAdminSection" style="display:none;">
+            <h3 id="orderFormTitle" style="margin-bottom:12px; font-size:1rem;">إضافة أوردر جديد يدوياً</h3>
+            <div class="form-group">
+                <label>اسم العميل</label>
+                <input type="text" id="orderFormName" class="form-control" placeholder="اسم العميل بالكامل">
+                <div id="orderFormRepeatNote" style="display:none; font-size:0.8rem; color:#4ade80; margin-top:6px;"></div>
+            </div>
+            <div class="form-group">
+                <label>رقم الهاتف</label>
+                <input type="text" id="orderFormPhone" class="form-control" placeholder="01XXXXXXXXX">
+            </div>
+            <div class="form-group">
+                <label>المحافظة</label>
+                <select id="orderFormGovernorate" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label>العنوان بالتفصيل (اختياري)</label>
+                <textarea id="orderFormAddress" class="form-control" rows="2" placeholder="اسم المدينة/القرية - الشارع - رقم العمارة - رقم الشقة"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>تفاصيل المنتجات</label>
+                <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+                    <select id="orderFormProduct" class="form-control" style="flex:2; min-width:150px;"></select>
+                    <select id="orderFormSize" class="form-control" style="flex:1; min-width:80px;"></select>
+                    <input type="number" id="orderFormQty" class="form-control" value="1" min="1" style="flex:1; min-width:70px;">
+                    <button class="btn btn-outline" id="orderFormAddLineBtn" type="button" style="padding:5px 15px;"><i class="fa-solid fa-plus"></i> ضيف</button>
+                </div>
+                <div id="orderFormLines" style="border:1px solid var(--border-color); border-radius:8px; margin-bottom:10px;"></div>
+            </div>
+
+            <div class="form-group">
+                <label>ملاحظات إضافية (اختياري)</label>
+                <input type="text" id="orderFormNotes" class="form-control" placeholder="أي تفاصيل إضافية عن الأوردر">
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface-light); padding:12px; border-radius:8px; margin-bottom:15px;">
+                <span>إجمالي الأوردر (شامل الشحن):</span>
+                <strong id="orderFormTotal">0 ج.م</strong>
+            </div>
+
+            <div style="display:flex; gap:10px; margin-bottom:25px;">
+                <button class="btn btn-primary" id="saveOrderBtn"><i class="fa-solid fa-plus"></i> إضافة الأوردر</button>
+                <button class="btn btn-outline" id="cancelOrderEditBtn" style="display:none;">إلغاء التعديل</button>
+            </div>
+
+            <h3 style="margin-bottom:12px; font-size:1rem;">الطلبات (<span id="ordersCount">0</span>)</h3>
+            <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+                <button class="filter-pill order-filter-btn" data-status="all">الكل</button>
+                <button class="filter-pill order-filter-btn" data-status="pending">جاري التسليم</button>
+                <button class="filter-pill order-filter-btn" data-status="shipped">تم الشحن</button>
+                <button class="filter-pill order-filter-btn" data-status="arrived">وصل لمركز التسليم</button>
+                <button class="filter-pill order-filter-btn" data-status="delivered">تم التسليم</button>
+            </div>
+            <input type="text" id="ordersSearchInput" class="form-control" placeholder="ابحث بالاسم أو رقم الهاتف..." style="margin-bottom:12px;">
+            <div id="ordersList"></div>
+        </div>
+
+        <!-- Section 7: All customers, searchable -->
+        <div id="customersAdminSection" style="display:none;">
+            <div class="form-group">
+                <label>ابحث عن عميل بالاسم أو رقم الهاتف</label>
+                <input type="text" id="customersSearchInput" class="form-control" placeholder="اكتب اسم العميل أو رقم الهاتف...">
+            </div>
+            <h3 style="margin-bottom:12px; font-size:1rem;">العملاء (<span id="customersCount">0</span>)</h3>
+            <div id="customersList"></div>
+        </div>
+
+        <!-- Section 8: Financial statistics ("financial officer" view) -->
+        <div id="financeAdminSection" style="display:none;">
+            <div style="display:flex; gap:8px; margin-bottom:15px; flex-wrap:wrap;">
+                <button class="filter-pill finance-period-btn" data-period="today">اليوم</button>
+                <button class="filter-pill finance-period-btn" data-period="week">آخر 7 أيام</button>
+                <button class="filter-pill finance-period-btn" data-period="month">آخر 30 يوم</button>
+                <button class="filter-pill finance-period-btn" data-period="all">كل الوقت</button>
+                <button class="filter-pill finance-period-btn" data-period="custom">فترة مخصصة</button>
+            </div>
+            <div id="financeCustomRange" style="display:none; gap:10px; margin-bottom:15px; flex-wrap:wrap;">
+                <div class="form-group" style="flex:1; min-width:140px;">
+                    <label>من تاريخ</label>
+                    <input type="date" id="financeFromDate" class="form-control">
+                </div>
+                <div class="form-group" style="flex:1; min-width:140px;">
+                    <label>إلى تاريخ</label>
+                    <input type="date" id="financeToDate" class="form-control">
+                </div>
+                <button class="btn btn-primary" id="financeApplyRangeBtn" style="align-self:flex-start; margin-top:6px;">تطبيق</button>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;">
+                <div class="admin-stat-card">
+                    <div style="font-size:1.6rem; font-weight:800;" id="financeTotalRevenue">0 ج.م</div>
+                    <div style="font-size:0.8rem; color:var(--text-muted);">إجمالي المبيعات في الفترة</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div style="font-size:1.6rem; font-weight:800;" id="financeOrdersCount">0</div>
+                    <div style="font-size:0.8rem; color:var(--text-muted);">عدد الطلبات في الفترة</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div style="font-size:1.6rem; font-weight:800;" id="financeAvgOrder">0 ج.م</div>
+                    <div style="font-size:0.8rem; color:var(--text-muted);">متوسط قيمة الأوردر</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div style="font-size:1.6rem; font-weight:800;" id="financeDeliveredRevenue">0 ج.م</div>
+                    <div style="font-size:0.8rem; color:var(--text-muted);">مبيعات تم تسليمها فعلاً</div>
+                </div>
+            </div>
+            <p style="font-size:0.8rem; color:var(--text-muted);">
+                الإحصائيات دي بتحسب إجمالي قيمة الطلبات (شامل الشحن) المسجلة في الفترة المختارة، سواء
+                جت من طلبات العملاء أونلاين أو من الطلبات اللي ضفتها يدوياً.
+            </p>
         </div>
     </div>
 
@@ -1831,22 +2136,29 @@
            Until you do this, the site automatically falls back to the
            same-device localStorage sync from before.
 
-           IMPORTANT — Realtime Database Rules needed for stock to sync
-           across every visitor's device: `fifa_stock` must be writable by
-           ANYONE (a checkout is done by an ordinary customer, not a signed-in
-           admin), while `fifa_products`/`fifa_settings`/`fifa_categories`/
-           `fifa_shipping` must stay admin-only. In the Firebase console, go
-           to Realtime Database > Rules and use:
+           IMPORTANT — Realtime Database Rules needed for stock AND orders to
+           sync across every visitor's device: `fifa_stock` and `fifa_orders`
+           must both be writable by ANYONE (a checkout is done by an ordinary
+           customer, not a signed-in admin — both the stock deduction and the
+           new order record are written at that moment), while
+           `fifa_products`/`fifa_settings`/`fifa_categories`/`fifa_shipping`
+           must stay admin-only. In the Firebase console, go to Realtime
+           Database > Rules and use:
              {
                "rules": {
                  "fifa_stock": { ".read": true, ".write": true },
+                 "fifa_orders": { ".read": "auth != null", ".write": true },
                  ".read": true,
                  ".write": "auth != null"
                }
              }
-           Without this, a customer's order will update stock only on their
-           own device/browser (it looks like it "worked" for them) but will
-           never reach anyone else's screen. */
+           Without this, a customer's order will update stock/orders only on
+           their own device/browser (it looks like it "worked" for them) but
+           will never reach the admin's screen on another device. Note
+           `fifa_orders` is set to admin-only READ since it holds customer
+           names and phone numbers — only a signed-in admin account can read
+           it back, while any visitor can still write their own new order to
+           it (Realtime Database rules allow write-without-read like this). */
         const FIREBASE_CONFIG = {
             apiKey: "AIzaSyCOtXb0CNt8IG8Exgf1SdsnQUEcD1UNITM",
             authDomain: "fifastore1-7e215.firebaseapp.com",
@@ -1985,6 +2297,10 @@
             document.getElementById('statVisitsTotal').textContent = totalOf(stats.visits);
             document.getElementById('statRegsToday').textContent = stats.registrations[todayStr()] || 0;
             document.getElementById('statRegsTotal').textContent = totalOf(stats.registrations);
+            document.getElementById('statOrdersTotal').textContent = orders.length;
+            document.getElementById('statOrdersPending').textContent = orders.filter(o => o.status !== 'delivered').length;
+            document.getElementById('statOrdersDelivered').textContent = orders.filter(o => o.status === 'delivered').length;
+            document.getElementById('statCustomersTotal').textContent = getCustomersList().length;
         }
 
         // Sends the report for a given date (defaults to yesterday) via EmailJS.
@@ -2014,6 +2330,51 @@
                 stats.emailSentDates = stats.emailSentDates.slice(-30);
                 syncSharedData('fifa_stats', stats);
             }).catch(err => console.warn('Daily report email failed to send.', err));
+        }
+
+        /* ==========================================
+           0d. ORDERS, CUSTOMERS & FINANCE (admin order tracking)
+           ==========================================
+           Every order — whether a customer sent it themselves through the
+           WhatsApp checkout, or the admin typed it in manually — gets saved
+           as a record here in `orders`, synced (like everything else) via
+           syncSharedData so it reaches the admin on every device. This is
+           what powers the "الطلبات الجارية" (current orders), "العملاء"
+           (customers) and "إحصائيات الفلوس" (financial stats) admin tabs. */
+        let orders = JSON.parse(localStorage.getItem('fifa_orders')) || [];
+        let orderFormLines = [];      // line items being built in the add/edit order form
+        let editingOrderId = null;    // set while editing an existing order, null while adding a new one
+        let ordersStatusFilter = 'all';
+        let financePeriod = 'today';
+
+        function makeOrderId() {
+            return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+        }
+
+        // Loose match so "Ahmed Mohamed", " ahmed mohamed ", "AHMED MOHAMED"
+        // are all recognised as the same customer name.
+        function normalizeName(str) {
+            return (str || '').trim().toLowerCase().replace(/\s+/g, ' ');
+        }
+
+        function normalizePhone(str) {
+            return (str || '').replace(/[^\d]/g, '');
+        }
+
+        // How many times (besides the one currently being added/edited) this
+        // name has ordered before — used for the "طلب قبل كده" note.
+        function countPriorOrdersByName(name, excludeId) {
+            const n = normalizeName(name);
+            if (!n) return 0;
+            return orders.filter(o => o.id !== excludeId && normalizeName(o.customerName) === n).length;
+        }
+
+        function orderLineTotal(o) {
+            return (o.items || []).reduce((sum, it) => sum + it.price * it.qty, 0) + (o.shippingCost || 0);
+        }
+
+        function saveOrders() {
+            syncSharedData('fifa_orders', orders);
         }
 
         /* 1. EXPANDED PRODUCTS LIST (PRICES BETWEEN 300 & 320 EGP) */
@@ -2325,6 +2686,47 @@
         const regLoggedEmail = document.getElementById('regLoggedEmail');
         const regLogoutBtn = document.getElementById('regLogoutBtn');
         const regStatusText = document.getElementById('regStatusText');
+
+        // Cart customer info (used to build the saved order record)
+        const cartCustomerName = document.getElementById('cartCustomerName');
+        const cartCustomerPhone = document.getElementById('cartCustomerPhone');
+
+        // Orders / Customers / Finance Admin Elements
+        const tabOrdersBtn = document.getElementById('tabOrdersBtn');
+        const tabCustomersBtn = document.getElementById('tabCustomersBtn');
+        const tabFinanceBtn = document.getElementById('tabFinanceBtn');
+        const ordersAdminSection = document.getElementById('ordersAdminSection');
+        const customersAdminSection = document.getElementById('customersAdminSection');
+        const financeAdminSection = document.getElementById('financeAdminSection');
+        const orderFormTitle = document.getElementById('orderFormTitle');
+        const orderFormName = document.getElementById('orderFormName');
+        const orderFormRepeatNote = document.getElementById('orderFormRepeatNote');
+        const orderFormPhone = document.getElementById('orderFormPhone');
+        const orderFormGovernorate = document.getElementById('orderFormGovernorate');
+        const orderFormAddress = document.getElementById('orderFormAddress');
+        const orderFormProduct = document.getElementById('orderFormProduct');
+        const orderFormSize = document.getElementById('orderFormSize');
+        const orderFormQty = document.getElementById('orderFormQty');
+        const orderFormAddLineBtn = document.getElementById('orderFormAddLineBtn');
+        const orderFormLinesBox = document.getElementById('orderFormLines');
+        const orderFormNotes = document.getElementById('orderFormNotes');
+        const orderFormTotalEl = document.getElementById('orderFormTotal');
+        const saveOrderBtn = document.getElementById('saveOrderBtn');
+        const cancelOrderEditBtn = document.getElementById('cancelOrderEditBtn');
+        const ordersCountEl = document.getElementById('ordersCount');
+        const ordersSearchInput = document.getElementById('ordersSearchInput');
+        const ordersListEl = document.getElementById('ordersList');
+        const customersSearchInput = document.getElementById('customersSearchInput');
+        const customersCountEl = document.getElementById('customersCount');
+        const customersListEl = document.getElementById('customersList');
+        const financeCustomRange = document.getElementById('financeCustomRange');
+        const financeFromDate = document.getElementById('financeFromDate');
+        const financeToDate = document.getElementById('financeToDate');
+        const financeApplyRangeBtn = document.getElementById('financeApplyRangeBtn');
+        const financeTotalRevenue = document.getElementById('financeTotalRevenue');
+        const financeOrdersCount = document.getElementById('financeOrdersCount');
+        const financeAvgOrder = document.getElementById('financeAvgOrder');
+        const financeDeliveredRevenue = document.getElementById('financeDeliveredRevenue');
 
         /* 2. RENDER PRODUCTS */
         function renderProducts(filter = 'all') {
@@ -2673,6 +3075,9 @@
         function openCart() {
             cartSidebar.classList.add('active');
             overlay.classList.add('active');
+            if (currentUser && currentUser.name && !cartCustomerName.value) {
+                cartCustomerName.value = currentUser.name;
+            }
         }
 
         function closeCart() {
@@ -2814,15 +3219,29 @@
                 alert('من فضلك اختر محافظتك أولاً قبل إتمام الطلب.');
                 return;
             }
+            const customerName = cartCustomerName.value.trim();
+            const customerPhone = cartCustomerPhone.value.trim();
+            if (!customerName) {
+                alert('من فضلك اكتب اسمك بالكامل قبل إتمام الطلب.');
+                cartCustomerName.focus();
+                return;
+            }
+            if (!customerPhone) {
+                alert('من فضلك اكتب رقم هاتفك قبل إتمام الطلب.');
+                cartCustomerPhone.focus();
+                return;
+            }
 
             let phone = settings.whatsappNumber; 
             let message = "مرحباً FIFA STORE، أود طلب القمصان التالية:\n\n";
 
             let total = 0;
+            const orderLineItems = [];
             cart.forEach((item, i) => {
                 let subtotal = item.price * item.qty;
                 total += subtotal;
                 message += `${i+1}. ${item.title} (مقاس: ${item.size}) - الكمية: ${item.qty} - السعر: ${subtotal} ج.م\n`;
+                orderLineItems.push({ productId: item.id, title: item.title, size: item.size, qty: item.qty, price: item.price });
             });
 
             const shippingCost = shippingPrices[selectedGovernorate] || 0;
@@ -2881,6 +3300,29 @@
             syncSharedData('fifa_stock', stockData);
             renderProducts(currentFilter);
             renderAdminProductsList();
+
+            // Save a full order record (name, phone, address, items, status)
+            // so it shows up for the admin under "الطلبات الجارية" — this is
+            // what lets the admin track every order and see repeat customers,
+            // even though the actual confirmation still happens over WhatsApp.
+            orders.unshift({
+                id: makeOrderId(),
+                customerName: customerName,
+                phone: customerPhone,
+                governorate: selectedGovernorate,
+                address: '',
+                notes: '',
+                items: orderLineItems,
+                productsTotal: total,
+                shippingCost: shippingCost,
+                total: total + shippingCost,
+                status: 'pending',
+                source: 'customer',
+                date: new Date().toISOString()
+            });
+            saveOrders();
+            if (ordersAdminSection.style.display === 'block') renderOrdersAdmin();
+            if (customersAdminSection.style.display === 'block') renderCustomersAdmin();
 
             let whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(waText)}`;
             window.open(whatsappUrl, '_blank');
@@ -3175,6 +3617,26 @@
                     renderStatsAdmin();
                 }
             });
+            // Orders (customer checkouts + manually-added admin orders) — see
+            // the "fifa_orders" note in FIREBASE_CONFIG above for the database
+            // rule this needs (public write, admin-only read).
+            firebaseDB.ref('fifa_orders').on('value', (snapshot) => {
+                const val = snapshot.val();
+                if (val) {
+                    orders = Array.isArray(val) ? val.filter(Boolean) : Object.values(val);
+                    try { localStorage.setItem('fifa_orders', JSON.stringify(orders)); } catch (err) { console.warn('localStorage full, skipping local orders cache', err); }
+                    if (ordersAdminSection.style.display === 'block') renderOrdersAdmin();
+                    if (customersAdminSection.style.display === 'block') renderCustomersAdmin();
+                    if (financeAdminSection.style.display === 'block') renderFinanceAdmin();
+                    if (statsAdminSection.style.display === 'block') renderStatsAdmin();
+                }
+            }, (err) => {
+                // A normal (non-admin) visitor's Firebase rule is write-only for
+                // fifa_orders (see the rules note above) — reading it back is
+                // expected to fail with permission-denied for them, and that's
+                // fine, their own order already synced via syncSharedData's set().
+                console.warn('fifa_orders read blocked (expected for non-admin visitors):', err && err.message);
+            });
         }
 
         /* 7. ADMIN PANEL (full content control: products, hero, site settings) */
@@ -3197,13 +3659,29 @@
             settingsAdminSection.style.display = tab === 'settings' ? 'block' : 'none';
             shippingAdminSection.style.display = tab === 'shipping' ? 'block' : 'none';
             statsAdminSection.style.display = tab === 'stats' ? 'block' : 'none';
+            ordersAdminSection.style.display = tab === 'orders' ? 'block' : 'none';
+            customersAdminSection.style.display = tab === 'customers' ? 'block' : 'none';
+            financeAdminSection.style.display = tab === 'finance' ? 'block' : 'none';
             if (tab === 'shipping') renderShippingAdminInputs();
             if (tab === 'stats') renderStatsAdmin();
+            if (tab === 'orders') {
+                renderOrderFormGovernorateOptions();
+                renderOrderFormProductOptions();
+                renderOrdersAdmin();
+            }
+            if (tab === 'customers') renderCustomersAdmin();
+            if (tab === 'finance') renderFinanceAdmin();
+            document.querySelectorAll('#adminModal .admin-tab-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.tab === tab);
+            });
         }
         tabHeroBtn.addEventListener('click', () => showAdminTab('hero'));
         tabProductBtn.addEventListener('click', () => showAdminTab('products'));
         tabSettingsBtn.addEventListener('click', () => showAdminTab('settings'));
         tabShippingBtn.addEventListener('click', () => showAdminTab('shipping'));
+        tabOrdersBtn.addEventListener('click', () => showAdminTab('orders'));
+        tabCustomersBtn.addEventListener('click', () => showAdminTab('customers'));
+        tabFinanceBtn.addEventListener('click', () => showAdminTab('finance'));
         tabStatsBtn.addEventListener('click', () => showAdminTab('stats'));
 
         // Save Hero Text
@@ -3671,6 +4149,394 @@
             alert('تم حفظ أسعار الشحن لكل المحافظات بنجاح!');
         });
 
+        /* ==========================================
+           7b. ORDERS ADMIN (add/edit orders, track delivery status)
+           ========================================== */
+        function renderOrderFormGovernorateOptions() {
+            const current = orderFormGovernorate.value;
+            orderFormGovernorate.innerHTML = '<option value="" disabled ' + (current ? '' : 'selected') + '>اختر المحافظة</option>' +
+                EGYPT_GOVERNORATES.map(g => `<option value="${g}" ${current === g ? 'selected' : ''}>${g} - ${shippingPrices[g]} ج.م شحن</option>`).join('');
+        }
+
+        function renderOrderFormProductOptions() {
+            orderFormProduct.innerHTML = products.map(p => `<option value="${p.id}">${p.title} — ${p.price} ج.م</option>`).join('');
+            renderOrderFormSizeOptions();
+        }
+
+        function renderOrderFormSizeOptions() {
+            const product = products.find(p => p.id === parseInt(orderFormProduct.value));
+            const sizes = product ? productConfiguredSizes(product) : [];
+            orderFormSize.innerHTML = (sizes.length ? sizes : ALL_SIZES).map(s => `<option value="${s}">${s}</option>`).join('');
+        }
+        orderFormProduct.addEventListener('change', renderOrderFormSizeOptions);
+
+        function recalcOrderFormTotal() {
+            const productsTotal = orderFormLines.reduce((sum, l) => sum + l.price * l.qty, 0);
+            const gov = orderFormGovernorate.value;
+            const shippingCost = gov ? (shippingPrices[gov] || 0) : 0;
+            orderFormTotalEl.textContent = `${productsTotal + shippingCost} ج.م`;
+            return { productsTotal, shippingCost };
+        }
+        orderFormGovernorate.addEventListener('change', recalcOrderFormTotal);
+
+        function renderOrderFormLines() {
+            if (!orderFormLines.length) {
+                orderFormLinesBox.innerHTML = '<p style="padding:12px; color:var(--text-muted); font-size:0.85rem;">لسه مفيش أصناف مضافة للأوردر ده.</p>';
+            } else {
+                orderFormLinesBox.innerHTML = orderFormLines.map((l, i) => `
+                    <div style="display:flex; align-items:center; gap:10px; padding:8px 10px; border-bottom:1px solid var(--border-color);">
+                        <div style="flex:1; font-size:0.9rem;">${l.title} <span style="color:var(--text-muted);">(${l.size})</span></div>
+                        <div style="font-size:0.85rem; color:var(--text-muted);">${l.qty} × ${l.price} ج.م</div>
+                        <button class="remove-item" onclick="removeOrderFormLine(${i})"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `).join('');
+            }
+            recalcOrderFormTotal();
+        }
+
+        orderFormAddLineBtn.addEventListener('click', () => {
+            const product = products.find(p => p.id === parseInt(orderFormProduct.value));
+            if (!product) { alert('اختار منتج الأول.'); return; }
+            const size = orderFormSize.value;
+            const qty = Math.max(1, parseInt(orderFormQty.value) || 1);
+            orderFormLines.push({ productId: product.id, title: product.title, size, qty, price: product.price });
+            orderFormQty.value = 1;
+            renderOrderFormLines();
+        });
+
+        function removeOrderFormLine(index) {
+            orderFormLines.splice(index, 1);
+            renderOrderFormLines();
+        }
+
+        // Shows "العميل ده طلب قبل كده X مرة" as soon as a name matching an
+        // existing order is typed, so the admin knows before saving.
+        orderFormName.addEventListener('input', () => {
+            const count = countPriorOrdersByName(orderFormName.value, editingOrderId);
+            if (count > 0) {
+                orderFormRepeatNote.style.display = 'block';
+                orderFormRepeatNote.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${count === 1 ? 'العميل ده طلب من عندنا قبل كده مرة واحدة.' : `العميل ده طلب من عندنا قبل كده ${count} مرات.`}`;
+            } else {
+                orderFormRepeatNote.style.display = 'none';
+            }
+        });
+
+        function resetOrderForm() {
+            editingOrderId = null;
+            orderFormLines = [];
+            orderFormName.value = '';
+            orderFormPhone.value = '';
+            orderFormGovernorate.value = '';
+            orderFormAddress.value = '';
+            orderFormNotes.value = '';
+            orderFormRepeatNote.style.display = 'none';
+            orderFormTitle.textContent = 'إضافة أوردر جديد يدوياً';
+            saveOrderBtn.innerHTML = '<i class="fa-solid fa-plus"></i> إضافة الأوردر';
+            cancelOrderEditBtn.style.display = 'none';
+            renderOrderFormGovernorateOptions();
+            renderOrderFormLines();
+        }
+
+        // Loads an existing order's full details into the form above so the
+        // admin can edit it "normally" (name, phone, address, items, status
+        // all stay editable) instead of only being able to add new ones.
+        function editOrderById(id) {
+            const order = orders.find(o => o.id === id);
+            if (!order) return;
+            editingOrderId = id;
+            orderFormLines = (order.items || []).map(it => ({ ...it }));
+            orderFormName.value = order.customerName || '';
+            orderFormPhone.value = order.phone || '';
+            orderFormAddress.value = order.address || '';
+            orderFormNotes.value = order.notes || '';
+            renderOrderFormGovernorateOptions();
+            orderFormGovernorate.value = order.governorate || '';
+            orderFormTitle.textContent = 'تعديل الأوردر';
+            saveOrderBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات';
+            cancelOrderEditBtn.style.display = 'inline-flex';
+            renderOrderFormLines();
+            orderFormName.dispatchEvent(new Event('input'));
+            ordersAdminSection.scrollTop = 0;
+            adminModal.scrollTop = 0;
+        }
+
+        cancelOrderEditBtn.addEventListener('click', resetOrderForm);
+
+        saveOrderBtn.addEventListener('click', () => {
+            const name = orderFormName.value.trim();
+            const phone = orderFormPhone.value.trim();
+            const governorate = orderFormGovernorate.value;
+            if (!name) { alert('من فضلك اكتب اسم العميل.'); return; }
+            if (!phone) { alert('من فضلك اكتب رقم هاتف العميل.'); return; }
+            if (!governorate) { alert('من فضلك اختر المحافظة.'); return; }
+            if (!orderFormLines.length) { alert('ضيف صنف واحد على الأقل للأوردر.'); return; }
+
+            const { productsTotal, shippingCost } = recalcOrderFormTotal();
+
+            if (editingOrderId) {
+                const order = orders.find(o => o.id === editingOrderId);
+                if (order) {
+                    order.customerName = name;
+                    order.phone = phone;
+                    order.governorate = governorate;
+                    order.address = orderFormAddress.value.trim();
+                    order.notes = orderFormNotes.value.trim();
+                    order.items = orderFormLines.map(l => ({ ...l }));
+                    order.productsTotal = productsTotal;
+                    order.shippingCost = shippingCost;
+                    order.total = productsTotal + shippingCost;
+                }
+            } else {
+                orders.unshift({
+                    id: makeOrderId(),
+                    customerName: name,
+                    phone: phone,
+                    governorate: governorate,
+                    address: orderFormAddress.value.trim(),
+                    notes: orderFormNotes.value.trim(),
+                    items: orderFormLines.map(l => ({ ...l })),
+                    productsTotal: productsTotal,
+                    shippingCost: shippingCost,
+                    total: productsTotal + shippingCost,
+                    status: 'pending',
+                    source: 'admin',
+                    date: new Date().toISOString()
+                });
+            }
+
+            saveOrders();
+            resetOrderForm();
+            renderOrdersAdmin();
+            alert('تم حفظ الأوردر بنجاح!');
+        });
+
+        // Order pipeline: pending (جاري التسليم) -> shipped (تم الشحن)
+        // -> arrived (وصل لمركز التسليم) -> delivered (تم التسليم).
+        // Each stage has its own label + color used for the badge, the
+        // status dropdown and the order card's accent border.
+        const ORDER_STAGES = {
+            pending:   { label: 'جاري التسليم',      bg: '#3a2f1c', color: '#facc15' },
+            shipped:   { label: 'تم الشحن',           bg: '#1c2a3a', color: '#60a5fa' },
+            arrived:   { label: 'وصل لمركز التسليم',  bg: '#2a1c3a', color: '#c084fc' },
+            delivered: { label: 'تم التسليم',         bg: '#1c3a2a', color: '#4ade80' }
+        };
+
+        function orderStageMeta(status) {
+            return ORDER_STAGES[status] || ORDER_STAGES.pending;
+        }
+
+        function setOrderStatus(id, status) {
+            const order = orders.find(o => o.id === id);
+            if (!order || !ORDER_STAGES[status]) return;
+            order.status = status;
+            saveOrders();
+            renderOrdersAdmin();
+        }
+
+        function deleteOrderById(id) {
+            if (!confirm('متأكد إنك عايز تمسح الأوردر ده نهائياً؟')) return;
+            orders = orders.filter(o => o.id !== id);
+            saveOrders();
+            renderOrdersAdmin();
+        }
+
+        function orderStatusBadge(order) {
+            const meta = orderStageMeta(order.status);
+            return `<span class="admin-stage-badge" style="background:${meta.bg}; color:${meta.color};">${meta.label}</span>`;
+        }
+
+        function orderStatusSelect(order) {
+            const current = order.status && ORDER_STAGES[order.status] ? order.status : 'pending';
+            const options = Object.keys(ORDER_STAGES).map(key =>
+                `<option value="${key}" ${key === current ? 'selected' : ''}>${ORDER_STAGES[key].label}</option>`
+            ).join('');
+            return `<select class="status-select" style="border-color:${orderStageMeta(current).color};" onchange="setOrderStatus('${order.id}', this.value)">${options}</select>`;
+        }
+
+        function renderOrdersAdmin() {
+            const searchTerm = (ordersSearchInput.value || '').trim().toLowerCase();
+            let list = orders.slice();
+            if (ordersStatusFilter !== 'all') {
+                list = list.filter(o => (o.status && ORDER_STAGES[o.status] ? o.status : 'pending') === ordersStatusFilter);
+            }
+            if (searchTerm) {
+                list = list.filter(o =>
+                    (o.customerName || '').toLowerCase().includes(searchTerm) ||
+                    (o.phone || '').includes(searchTerm)
+                );
+            }
+            list.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            ordersCountEl.textContent = orders.length;
+
+            if (!list.length) {
+                ordersListEl.innerHTML = '<p style="padding:20px; text-align:center; color:var(--text-muted);">مفيش طلبات مطابقة.</p>';
+                return;
+            }
+
+            ordersListEl.innerHTML = list.map(order => {
+                const priorCount = countPriorOrdersByName(order.customerName, order.id);
+                const meta = orderStageMeta(order.status);
+                const itemsHtml = (order.items || []).map(it => `
+                    <div style="font-size:0.85rem; color:var(--text-muted); padding:3px 0;">- ${it.title} (${it.size}) × ${it.qty} = ${it.price * it.qty} ج.م</div>
+                `).join('');
+                const dateStr = order.date ? new Date(order.date).toLocaleString('ar-EG') : '';
+                return `
+                    <div class="order-card" style="--card-accent:${meta.color};">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap;">
+                            <div>
+                                <div style="font-weight:700; font-size:1rem;">
+                                    <i class="fa-solid fa-user"></i> ${order.customerName}
+                                    ${priorCount > 0 ? `<span style="font-size:0.75rem; color:#4ade80; font-weight:400;"> (طلب قبل كده ${priorCount} ${priorCount === 1 ? 'مرة' : 'مرات'})</span>` : ''}
+                                </div>
+                                <div style="font-size:0.85rem; color:var(--text-muted); margin-top:3px;">
+                                    <i class="fa-solid fa-phone"></i> ${order.phone || '—'} &nbsp;|&nbsp;
+                                    <i class="fa-solid fa-location-dot"></i> ${order.governorate || '—'}
+                                </div>
+                                ${order.address ? `<div style="font-size:0.8rem; color:var(--text-muted); margin-top:3px;">${order.address}</div>` : ''}
+                            </div>
+                            <div style="text-align:left;">
+                                ${orderStatusBadge(order)}
+                                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:5px;">${dateStr}</div>
+                            </div>
+                        </div>
+                        <div style="margin:10px 0; border-top:1px solid var(--border-color); padding-top:8px;">
+                            ${itemsHtml}
+                            ${order.notes ? `<div style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;"><i class="fa-solid fa-note-sticky"></i> ${order.notes}</div>` : ''}
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                            <strong>الإجمالي: ${order.total} ج.م</strong>
+                            <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                                <span style="font-size:0.78rem; color:var(--text-muted);"><i class="fa-solid fa-truck-fast"></i> حالة الشحن:</span>
+                                ${orderStatusSelect(order)}
+                                <button class="btn btn-outline" style="padding:5px 12px; font-size:0.8rem;" onclick="editOrderById('${order.id}')"><i class="fa-solid fa-pen"></i> تعديل</button>
+                                <button class="remove-item" style="padding:5px 12px; font-size:0.8rem;" onclick="deleteOrderById('${order.id}')"><i class="fa-solid fa-trash"></i> حذف</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        document.querySelectorAll('.order-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                ordersStatusFilter = btn.dataset.status;
+                document.querySelectorAll('.order-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+                renderOrdersAdmin();
+            });
+        });
+        ordersSearchInput.addEventListener('input', renderOrdersAdmin);
+
+        /* ==========================================
+           7c. CUSTOMERS ADMIN (derived from orders, searchable)
+           ========================================== */
+        // Groups all orders into unique customers — grouped by phone number
+        // when available (the more reliable unique key), falling back to the
+        // normalized name for orders with no phone recorded.
+        function getCustomersList() {
+            const map = new Map();
+            orders.forEach(order => {
+                const phoneKey = normalizePhone(order.phone);
+                const key = phoneKey || ('name:' + normalizeName(order.customerName));
+                if (!map.has(key)) {
+                    map.set(key, {
+                        key,
+                        name: order.customerName || 'بدون اسم',
+                        phone: order.phone || '',
+                        governorate: order.governorate || '',
+                        count: 0,
+                        total: 0,
+                        lastDate: order.date
+                    });
+                }
+                const c = map.get(key);
+                c.count += 1;
+                c.total += order.total || 0;
+                if (new Date(order.date) > new Date(c.lastDate)) {
+                    c.lastDate = order.date;
+                    c.name = order.customerName || c.name; // keep most recent spelling of the name
+                }
+            });
+            return Array.from(map.values()).sort((a, b) => new Date(b.lastDate) - new Date(a.lastDate));
+        }
+
+        function renderCustomersAdmin() {
+            const searchTerm = (customersSearchInput.value || '').trim().toLowerCase();
+            let list = getCustomersList();
+            customersCountEl.textContent = list.length;
+            if (searchTerm) {
+                list = list.filter(c => c.name.toLowerCase().includes(searchTerm) || c.phone.includes(searchTerm));
+            }
+            if (!list.length) {
+                customersListEl.innerHTML = '<p style="padding:20px; text-align:center; color:var(--text-muted);">مفيش عملاء مطابقين.</p>';
+                return;
+            }
+            customersListEl.innerHTML = list.map(c => `
+                <div style="border:1px solid var(--border-color); border-radius:8px; padding:12px 14px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <div>
+                        <div style="font-weight:700;"><i class="fa-solid fa-user"></i> ${c.name}</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); margin-top:3px;">
+                            <i class="fa-solid fa-phone"></i> ${c.phone || '—'} ${c.governorate ? `&nbsp;|&nbsp; <i class="fa-solid fa-location-dot"></i> ${c.governorate}` : ''}
+                        </div>
+                    </div>
+                    <div style="text-align:left;">
+                        <div style="font-size:0.9rem;"><strong>${c.count}</strong> ${c.count === 1 ? 'طلب' : 'طلبات'}</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted);">إجمالي: ${c.total} ج.م</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        customersSearchInput.addEventListener('input', renderCustomersAdmin);
+
+        /* ==========================================
+           7d. FINANCE ADMIN ("إحصائيات الفلوس" — money in, by period)
+           ========================================== */
+        function ordersInPeriod(period) {
+            const now = new Date();
+            let from = null, to = null;
+            if (period === 'today') {
+                from = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                to = new Date(from.getTime() + 24 * 60 * 60 * 1000);
+            } else if (period === 'week') {
+                to = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+                from = new Date(to.getTime() - 7 * 24 * 60 * 60 * 1000);
+            } else if (period === 'month') {
+                to = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+                from = new Date(to.getTime() - 30 * 24 * 60 * 60 * 1000);
+            } else if (period === 'custom') {
+                if (financeFromDate.value) from = new Date(financeFromDate.value);
+                if (financeToDate.value) to = new Date(new Date(financeToDate.value).getTime() + 24 * 60 * 60 * 1000);
+            }
+            // 'all' (or custom with no dates picked yet) → no filtering
+            return orders.filter(o => {
+                const d = new Date(o.date);
+                if (from && d < from) return false;
+                if (to && d >= to) return false;
+                return true;
+            });
+        }
+
+        function renderFinanceAdmin() {
+            const list = ordersInPeriod(financePeriod);
+            const total = list.reduce((sum, o) => sum + (o.total || 0), 0);
+            const delivered = list.filter(o => o.status === 'delivered');
+            const deliveredTotal = delivered.reduce((sum, o) => sum + (o.total || 0), 0);
+            financeTotalRevenue.textContent = `${total} ج.م`;
+            financeOrdersCount.textContent = list.length;
+            financeAvgOrder.textContent = `${list.length ? Math.round(total / list.length) : 0} ج.م`;
+            financeDeliveredRevenue.textContent = `${deliveredTotal} ج.م`;
+        }
+
+        document.querySelectorAll('.finance-period-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                financePeriod = btn.dataset.period;
+                document.querySelectorAll('.finance-period-btn').forEach(b => b.classList.toggle('active', b === btn));
+                financeCustomRange.style.display = financePeriod === 'custom' ? 'flex' : 'none';
+                if (financePeriod !== 'custom') renderFinanceAdmin();
+            });
+        });
+        financeApplyRangeBtn.addEventListener('click', renderFinanceAdmin);
+
         /* 8. INITIALIZATION */
         sendReportNowBtn.addEventListener('click', () => {
             sendDailyReport(todayStr()).then(() => {
@@ -3761,6 +4627,15 @@
         showAdminTab('products');
         trackVisit();
         checkAndSendDailyReport();
+
+        // Default active look for the orders/finance filter button rows
+        // (the "click" handlers set these too — this just matches that same
+        // look for whichever option is selected by default on first load).
+        const defaultOrderFilterBtn = document.querySelector('.order-filter-btn[data-status="all"]');
+        if (defaultOrderFilterBtn) defaultOrderFilterBtn.classList.add('active');
+        const defaultFinanceBtn = document.querySelector('.finance-period-btn[data-period="today"]');
+        if (defaultFinanceBtn) defaultFinanceBtn.classList.add('active');
+        resetOrderForm();
     </script>
 </body>
 </html>
